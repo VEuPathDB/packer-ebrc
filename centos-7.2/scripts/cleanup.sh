@@ -1,6 +1,3 @@
-yum install -q -y yum-utils
-package-cleanup -q -y --oldkernel --count=1
-
 rm -f /var/lib/dhclient/*
 rm -rf /var/cache/yum/
 rm -rf /var/lib/yum/repos

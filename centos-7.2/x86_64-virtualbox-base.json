@@ -14,6 +14,7 @@
       "memory_size": "512",
       "cpu_count": "1",
 
+      "localstore": "builds",
       "provisioner": "virtualbox"
     },
 
@@ -23,14 +24,16 @@
       "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
       "scripts": [
         "scripts/install-vbox-guestadditions.sh",
+        "scripts/remove_extra_kernels.sh",
         "scripts/cleanup.sh",
         "scripts/zero.sh"
       ]
     }
   ],
+
   "builders": [
     {
-      "output_directory": "output-{{user `template_name`}}-{{user `provisioner`}}",
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}",
       "vm_name": "{{user `template_name`}}-{{user `provisioner`}}",
       "type": "virtualbox-iso",
       "boot_command": [
@@ -59,5 +62,6 @@
       ],
       "hard_drive_interface": "sata"
     }
-  ]
+  ],
+
 }

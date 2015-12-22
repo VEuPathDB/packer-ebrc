@@ -1,0 +1,63 @@
+{
+  "variables":
+    {
+      "template_name": "centos-7.2-x86_64",
+      "template_os": "RedHat_64",
+
+      "ssh_username": "root",
+      "ssh_password": "ebrc",
+
+      "iso_url": "http://mirror.cs.uwp.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+      "iso_checksum": "f90e4d28fa377669b2db16cbcb451fcb9a89d2460e3645993e30e137ac37d284",
+      "iso_checksum_type": "sha256",
+
+      "memory_size": "512",
+      "cpu_count": "1",
+
+      "provisioner": "virtualbox"
+    },
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
+      "scripts": [
+        "scripts/install-vbox-guestadditions.sh",
+        "scripts/cleanup.sh",
+        "scripts/zero.sh"
+      ]
+    }
+  ],
+  "builders": [
+    {
+      "output_directory": "output-{{user `template_name`}}-{{user `provisioner`}}",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}",
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40520,
+      "guest_os_type": "{{user `template_os`}}",
+      "http_directory": "http",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "/sbin/halt -h -p",
+      "guest_additions_path": "VBoxGuestAdditions.iso",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}" ],
+        [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
+        [ "modifyvm", "{{.Name}}", "--ioapic", "off"]
+      ],
+      "hard_drive_interface": "sata"
+    }
+  ]
+}

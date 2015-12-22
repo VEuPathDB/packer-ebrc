@@ -1,0 +1,51 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7.2-x86_64",
+      "provisioner": "virtualbox",
+      "ssh_username": "root",
+      "ssh_password": "ebrc"
+    },
+
+  "builders": [
+    {
+      "name": "{{user `template_name`}}-{{user `provisioner`}}-vagrant-puppet",
+      "type": "virtualbox-ovf",
+      "source_path": "output-{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "/sbin/halt -h -p"
+    }
+  ],
+
+  "provisioners": [
+
+    {
+      "type": "puppet-masterless",
+      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}} PATH=$PATH:/opt/puppetlabs/bin puppet apply --verbose  --detailed-exitcodes --modulepath='{{.ModulePath}}' {{.ManifestFile}}",
+      "module_paths": ["puppet/modules"],
+      "manifest_file": "puppet/manifests/vagrant.pp"
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zero.sh"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-puppet.box"
+    }
+  ]
+
+}

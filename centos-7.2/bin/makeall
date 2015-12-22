@@ -1,0 +1,8 @@
+#!/bin/bash
+
+packer build x86_64-virtualbox-base.json  
+
+packer build x86_64-virtualbox-puppet.json
+
+packer build x86_64-virtualbox-puppet-vagrant.json
+

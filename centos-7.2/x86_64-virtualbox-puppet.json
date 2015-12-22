@@ -1,0 +1,45 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7.2-x86_64",
+      "provisioner": "virtualbox",
+      "ssh_username": "root",
+      "ssh_password": "ebrc"
+    },
+
+  "builders": [
+    {
+      "output_directory": "output-{{user `template_name`}}-{{user `provisioner`}}-puppet",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet",
+      "type": "virtualbox-ovf",
+      "source_path": "output-{{user `template_name`}}-{{user `provisioner`}}/{{user `template_name`}}-{{user `provisioner`}}.ovf",
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "/sbin/halt -h -p"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/bootstrap-puppet.sh"
+      ]
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zero.sh"
+      ]
+    }
+  ]
+
+}

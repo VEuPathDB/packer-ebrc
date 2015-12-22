@@ -2,17 +2,21 @@
 
   "variables":
     {
+      "version": "1.0.0",
       "template_name": "centos-7.2-x86_64",
+      "description": "CentOS 7 with Puppet 4",
       "provisioner": "virtualbox",
       "ssh_username": "root",
-      "ssh_password": "ebrc"
+      "ssh_password": "ebrc",
+      "localstore": "builds"
     },
 
   "builders": [
     {
-      "name": "{{user `template_name`}}-{{user `provisioner`}}-vagrant-puppet",
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet-vagrant",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet",
       "type": "virtualbox-ovf",
-      "source_path": "output-{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
+      "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
@@ -42,10 +46,22 @@
   ],
 
   "post-processors": [
-    {
+    [{
       "type": "vagrant",
-      "output": "vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-puppet.box"
-    }
+      "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-puppet.box",
+      "keep_input_artifact": false
+    },
+    {
+      "type": "atlas",
+      "artifact": "mheiges/{{user `template_name`}}",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+        "description": "{{user `description`}}",
+        "provider": "virtualbox",
+        "created_at": "{{timestamp}}",
+        "version": "0.0.1"
+      }
+    }]
   ]
 
 }

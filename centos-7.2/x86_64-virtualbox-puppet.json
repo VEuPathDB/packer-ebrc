@@ -2,7 +2,7 @@
 
   "variables":
     {
-      "template_name": "centos-7.2-x86_64",
+      "template_name": "centos-7-64",
       "provisioner": "virtualbox",
       "ssh_username": "root",
       "ssh_password": "ebrc",

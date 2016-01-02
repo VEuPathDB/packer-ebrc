@@ -1,7 +1,7 @@
 {
   "variables":
     {
-      "template_name": "centos-7.2-x86_64",
+      "template_name": "centos-7-64",
       "template_os": "RedHat_64",
 
       "ssh_username": "root",
@@ -62,6 +62,6 @@
       ],
       "hard_drive_interface": "sata"
     }
-  ],
+  ]
 
 }

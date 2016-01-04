@@ -1,3 +1,4 @@
 .DS_Store
-builds
-packer_cache
+**/builds/**
+**/scratch/**
+**/packer_cache/**

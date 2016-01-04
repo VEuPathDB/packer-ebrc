@@ -1,0 +1,61 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7-64",
+      "provisioner": "virtualbox",
+      "ssh_username": "root",
+      "ssh_password": "ebrc",
+      "localstore": "builds"
+    },
+
+  "builders": [
+    {
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-web",
+      "type": "virtualbox-ovf",
+      "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "/sbin/halt -h -p",
+      "vboxmanage": [                                                                                                       
+        ["sharedfolder", "add", "{{.Name}}", "--name", "puppet", "--hostpath", "{{ pwd }}/scratch/puppet", "--automount"]            
+      ]
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "puppet-masterless",
+      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}} PATH=$PATH:/opt/puppetlabs/bin puppet apply --verbose  --detailed-exitcodes --modulepath='{{.ModulePath}}' {{.ManifestFile}}",
+      "module_paths": ["puppet/modules"],
+      "manifest_file": "puppet/manifests/vagrant.pp"
+    },
+
+    {
+      "type": "shell",
+      "inline": ["PATH=$PATH:/opt/puppetlabs/bin puppet apply --environment=savm --codedir=/media/sf_puppet/code /media/sf_puppet/code/environments/savm/manifests"]
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zero.sh"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    [{
+      "type": "vagrant",
+      "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-web.box",
+      "keep_input_artifact": false
+    }]
+  ]
+
+}

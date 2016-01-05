@@ -44,6 +44,7 @@
       "type": "shell",
       "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
       "scripts": [
+        "scripts/removepuppet.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ]

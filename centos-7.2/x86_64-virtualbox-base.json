@@ -26,7 +26,7 @@
         "scripts/install-vbox-guestadditions.sh",
         "scripts/remove_extra_kernels.sh",
         "scripts/cleanup.sh",
-        "scripts/zero.sh"
+        "scripts/zerodisk.sh"
       ]
     }
   ],

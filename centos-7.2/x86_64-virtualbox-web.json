@@ -45,7 +45,7 @@
       "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
       "scripts": [
         "scripts/cleanup.sh",
-        "scripts/zero.sh"
+        "scripts/zerodisk.sh"
       ]
     }
   ],

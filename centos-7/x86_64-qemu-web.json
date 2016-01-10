@@ -1,0 +1,79 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7-64",
+      "template_os": "RedHat_64",
+
+      "ssh_username": "root",
+      "ssh_password": "ebrc",
+
+      "iso_url": "http://mirror.cs.uwp.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+      "iso_checksum": "f90e4d28fa377669b2db16cbcb451fcb9a89d2460e3645993e30e137ac37d284",
+      "iso_checksum_type": "sha256",
+
+      "provisioner": "qemu",
+
+      "localstore": "builds",
+      "disk_size": "10000"
+    },
+
+  "builders": [
+    {
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}",
+
+      "type": "qemu",
+      "format": "qcow2",
+      "headless": "true",
+      "accelerator": "none",
+      "disk_size": "{{ user `disk_size`}}",
+
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_wait": "10s",
+
+      "http_directory": "http",
+
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+
+      "shutdown_command": "/sbin/halt -h -p"
+
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/bootstrap-puppet.sh"
+      ]
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/yumupdate.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+
+  "push": {
+    "name": "mheiges/{{user `template_name`}}",
+    "vcs": true
+  }
+
+}

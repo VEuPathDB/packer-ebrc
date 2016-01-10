@@ -1,6 +1,4 @@
-yum install -y bzip2
-yum install -y kernel-devel
-yum install -y gcc
+yum install -y bzip2 kernel-devel gcc dkms
 
 # Fix for OpenGL?
 ## Seems not. Apparently 5.0.10 is broken for EL 7.2 (https://www.virtualbox.org/ticket/14866)

@@ -11,4 +11,6 @@ yum -q -y clean all
 
 cat /dev/null > /var/log/wtmp
 
-updatedb --add-prunepaths /vagrant 2>/dev/null
+if hash updatedb 2>/dev/null; then
+  updatedb --add-prunepaths /vagrant 2>/dev/null
+fi

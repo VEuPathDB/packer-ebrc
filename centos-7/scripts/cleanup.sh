@@ -10,3 +10,5 @@ rm -f /root/VBoxGuestAdditions*
 yum -q -y clean all
 
 cat /dev/null > /var/log/wtmp
+
+updatedb --add-prunepaths /vagrant 2>/dev/null

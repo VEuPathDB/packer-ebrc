@@ -27,7 +27,8 @@ Lookup the current version in the json file.
     "1.0.1"
 
 Pick a desired incremented value and update the json file.
-    jq --arg ver 1.0.2 '. | (.variables.version = $ver)' x86_64-virtualbox-puppet-vagrant.json | sponge x86_64-virtualbox-puppet-vagrant.json
+    VER=1.0.3
+    jq --arg ver $VER '. | (.variables.version = $ver)' x86_64-virtualbox-puppet-vagrant.json | sponge x86_64-virtualbox-puppet-vagrant.json
 
     export ATLAS_TOKEN=.......
     packer build x86_64-virtualbox-puppet-vagrant.json

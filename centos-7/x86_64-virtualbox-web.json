@@ -8,7 +8,10 @@
       "ssh_password": "ebrc",
       "localstore": "builds",
       "memory_size": "1024",
-      "cpu_count": "2"
+      "cpu_count": "2",
+      "appdb_disk_size": "512000",
+      "userdb_disk_size": "51200",
+      "data_disk_size": "256000"
     },
 
   "builders": [
@@ -28,7 +31,16 @@
         [ "modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}" ],
         [ "modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}" ],
         [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
-        [ "modifyvm", "{{.Name}}", "--ioapic", "on"]
+        [ "modifyvm", "{{.Name}}", "--ioapic", "on"],
+
+        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/appdb.vmdk", "--variant", "Standard", "--size", "{{user `appdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "1", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/appdb.vmdk" ],
+
+        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/userdb.vmdk", "--variant", "Standard", "--size", "{{user `userdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "2", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/userdb.vmdk" ],
+
+        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/data.vmdk", "--variant", "Standard", "--size", "{{user `data_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "3", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/data.vmdk" ]
       ]
     }
   ],

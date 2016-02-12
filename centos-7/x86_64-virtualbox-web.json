@@ -79,16 +79,28 @@
         "scripts/reinstall-vbox-guestaddtions.sh",
         "scripts/removepuppet.sh",
         "scripts/cleanup.sh",
+        "scripts/write_packer_build_state",
         "scripts/zerodisk.sh"
       ]
+    },
+
+     {
+      "type": "file",
+      "source": "/root/packer_build_state",
+      "destination": "builds/build_state",
+      "direction": "download"
     }
+
   ],
 
   "post-processors": [
     [{
       "type": "vagrant",
       "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-web.box",
-      "keep_input_artifact": false
+      "keep_input_artifact": false,
+      "include": [
+        "builds/build_state"
+      ]
     }]
   ]
 

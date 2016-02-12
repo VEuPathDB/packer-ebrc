@@ -3,10 +3,12 @@ class vagrant::vagrant_user {
 
   group { 'vagrant':
     ensure => present,
+    gid    => '60001',
   }
 
   user { 'vagrant':
     ensure     => present,
+    uid        => '60001',
     managehome => true,
     password   => '$1$wBXGTRZ9$z8esySNE1sjAl9HSLwXMn1', # vagrant
     gid        => 'vagrant',

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Obtain Puppet manifests as a git archive. (Git archives can not be
+# commited to). Production hiera data is excluded.
+
+GIT_REPO='git@git.apidb.org:puppet4.git'
+
+LAST_COMMIT="$(git ls-remote --heads $GIT_REPO  | awk '{print $1}')"
+
+Bin="$(cd -- "$(dirname "$0")" && pwd)"
+
+PUPPET_DIR="$Bin/../scratch/puppet"
+
+rm -rf "$PUPPET_DIR"
+mkdir -p "$PUPPET_DIR"
+
+echo "${GIT_REPO} - ${LAST_COMMIT}" > "${PUPPET_DIR}/PUPPET_REPO_VERSION"
+
+git ls-remote "$GIT_REPO"
+
+git archive --remote "$GIT_REPO" "$LAST_COMMIT" \
+  | tar -x -C "$PUPPET_DIR" \
+    --exclude=code/environments/hashicorp\
+    --exclude=code/environments/production 

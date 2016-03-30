@@ -16,3 +16,9 @@ mount -t iso9660 -o loop /root/VBoxGuestAdditions.iso /tmp/isomount
 umount /tmp/isomount
 rm -rf /tmp/isomount
 rm -f /root/VBoxGuestAdditions.iso
+
+# confirm guest additions
+modprobe vboxguest
+probe_ret=$?
+
+exit $probe_ret

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+STATE_LOG='/root/packer_build_state'
+REPO_VER='/media/sf_scratch/puppet/PUPPET_REPO_VERSION'
+
+echo > "${STATE_LOG}"
+
+echo "Packer Build Date" >> "${STATE_LOG}"
+echo "-----------------------------------------" >> "${STATE_LOG}"
+date >> "${STATE_LOG}"
+
+echo >> "${STATE_LOG}"
+
+echo "Puppet Provisioning Version" >> "${STATE_LOG}"
+echo "-----------------------------------------" >> "${STATE_LOG}"
+
+cat $REPO_VER >> "${STATE_LOG}"
+
+echo >> "${STATE_LOG}"
+
+echo "Package List" >> "${STATE_LOG}"
+echo "-----------------------------------------" >> "${STATE_LOG}"
+
+rpm -qa | sort >> "${STATE_LOG}"

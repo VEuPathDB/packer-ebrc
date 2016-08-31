@@ -32,16 +32,11 @@ class vagrant::vagrant_user {
     type    => 'ssh-rsa',
   }
 
-  $sudoer = @(EOF)
-    Defaults:vagrant  !requiretty
-    %vagrant ALL=(ALL) NOPASSWD: ALL
-    | EOF
-
   file { '/etc/sudoers.d/10_vagrant':
-    content => $sudoer,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0440',
+    source => 'puppet:///modules/vagrant/10_vagrant',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0440',
   }
 
 }

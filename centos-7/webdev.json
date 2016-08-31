@@ -1,0 +1,72 @@
+{
+  "description": "EBRC Website Dev Box",
+  "name": "ebrc/webdev",
+  "versions": [
+    {
+      "providers": [
+        {
+          "checksum": "9b50eba2e6932d7878fcaaa9710d3f71370080f1657f31416c7f63a13d61744a",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.0.3/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.0.3"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "aae50dcff9fe686902bac2b162ca9b35383dd0c63e24b7f5fbf955a64d28dada",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.0.4/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.0.4"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "49aea56eca6023556cad9b3f1cae21ee4c8c9d8f7e223c462f8c3e2baaeb0b21",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.0.5/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.0.5"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "e6be8642f3d273dc4992635f7cdeb56858793d42d37d82c7469ebb6b0d74c903",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.0.6/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.0.6"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "f14489cc6cb73518cfc5ab9946656257f1e18eef926ef95c3b9424b48d23f9df",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.0.7/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.0.7"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "89067aadd311aa0a24d1492265e32bda02480b3e111bab66655b217114b21b0e",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.0.8/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.0.8"
+    }
+  ]
+}

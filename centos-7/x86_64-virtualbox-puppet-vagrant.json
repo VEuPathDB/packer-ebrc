@@ -1,6 +1,6 @@
 {
   "variables": {
-    "version": "1.0.9",
+    "version": "1.0.10",
     "template_name": "centos-7-64",
     "description": "CentOS 7 with Puppet 4",
     "provisioner": "virtualbox",

@@ -45,6 +45,8 @@ deployments as a git archive in the `scratch` directory. (Git archives
 can not be commited to). Production hiera data is excluded from the
 export by this script.
 
+    bin/export_ebrc_puppet
+
     packer build x86_64-virtualbox-web.json
 
 After the build is complete, calculate the sha256 checksum for the box file.

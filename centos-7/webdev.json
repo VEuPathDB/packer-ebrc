@@ -71,7 +71,7 @@
     {
       "providers": [
         {
-          "checksum": "46afecd68cdf4244551e52e8fafe12c5f708f25a5d28d00313b8892d917c7776",
+          "checksum": "7a59b116d2226e90b909aa766bce19b2bddbe318250a7986d63a25b2f4670612",
           "checksum_type": "sha256",
           "name": "virtualbox",
           "url": "http://software.apidb.org/vagrant/webdev/0.0.9/centos-7-64-virtualbox-web.box"

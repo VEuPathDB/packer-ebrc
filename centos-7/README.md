@@ -40,12 +40,11 @@ Pick a desired incremented value and update the json file.
 Converts `x86_64-virtualbox-puppet` OVF to Vagrant box with EBRC WDK-based
 web development support.
 
-Run `bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server
-deployments as a git archive in the `scratch` directory. (Git archives
+The provisioning in `x86_64-virtualbox-web.json` includes a run of
+`bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server
+deployments as a git archive into the `scratch` directory. (Git archives
 can not be commited to). Production hiera data is excluded from the
 export by this script.
-
-    bin/export_ebrc_puppet
 
     packer build x86_64-virtualbox-web.json
 
@@ -59,6 +58,11 @@ Lookup the current version in the json file.
     "0.0.3"
 
 Pick a desired incremented value and update the json file.
+
+**Note that there is a [Vagrant
+bug](https://github.com/mitchellh/vagrant/issues/7582) that prevents use
+of versions greater that 9 (e.g. 0.0.10 is not consistently detected as
+newer than 0.0.9).** So rollover `0.0.9` to `0.1.0`.
 
     VER=0.0.4
 

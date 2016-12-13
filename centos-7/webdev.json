@@ -89,6 +89,17 @@
         }
       ],
       "version": "0.1.0"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "5756a5e05857bbb20506c1b34390b027fad49fd08d7c4c9c18e325fb5244716d",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.1.2/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.1.2"
     }
   ]
 }

@@ -66,9 +66,13 @@ newer than 0.0.9).** So rollover `0.0.9` to `0.1.0`.
 
     VER=0.0.4
 
+Create some changelog notes.
+
+    CHANGELOG="brief notes about any signficant changes"
+
 Append an entry for this new version in the `webdev.json` file.
 
-    jq --arg ver $VER --arg sha2 $SHA2 '.versions += ( [{
+    jq --arg ver "$VER" --arg sha2 "$SHA2" --arg changelog "$CHANGELOG" '.versions += ( [{
       "providers": [
         {
           "checksum": $sha2,
@@ -77,7 +81,8 @@ Append an entry for this new version in the `webdev.json` file.
           "url": "http://software.apidb.org/vagrant/webdev/\($ver)/centos-7-64-virtualbox-web.box"
         }
       ],
-      "version": $ver
+      "version": $ver,
+      "changelog": $changelog
     }
     ] )' webdev.json | sponge webdev.json
 

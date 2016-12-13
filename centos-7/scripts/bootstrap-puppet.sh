@@ -20,7 +20,7 @@ echo "Configuring PuppetLabs repo..."
 repo_file="$(mktemp).rpm"
 curl -s --output "${repo_file}" "${REPO_URL}"
 yum install -y "${repo_file}"
-rm "${repo_file}"
+rm -f "${repo_file}"
 
 # Install Puppet...
 echo "Installing puppet"

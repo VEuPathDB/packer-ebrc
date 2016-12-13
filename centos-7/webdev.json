@@ -100,6 +100,18 @@
         }
       ],
       "version": "0.1.2"
+    },
+    {
+      "providers": [
+        {
+          "checksum": "7045d27b241a0d584dbff07e65cbcbfebf5121721c45a8191b55d7f97e53d073",
+          "checksum_type": "sha256",
+          "name": "virtualbox",
+          "url": "http://software.apidb.org/vagrant/webdev/0.1.3/centos-7-64-virtualbox-web.box"
+        }
+      ],
+      "version": "0.1.3",
+      "changelog": "Java 8 as system default"
     }
   ]
 }

@@ -1,3 +1,5 @@
+#/bin/sh -x
+
 rm -f /var/lib/dhclient/*
 rm -rf /var/cache/yum/
 rm -rf /var/lib/yum/repos

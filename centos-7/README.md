@@ -31,6 +31,7 @@ Each build step depends on the artifacts from the previous step.
 
 Generate a VirtualBox OVF with minimal CentOS 7. Creates
 `builds/centos-7-64-virtualbox/centos-7-64-virtualbox.ovf`
+Password for `root` account is `ebrc`.
 
     packer build  x86_64-virtualbox-base.json
 
@@ -41,8 +42,11 @@ kernels and zero the disks.
 
 #### x86_64-virtualbox-puppet.json
 
-Adds Puppet to the `x86_64-virtualbox-base` OVF from the previous step. Creates
-`builds/centos-7-64-virtualbox-puppet/centos-7-64-virtualbox-puppet.ovf`
+Adds Puppet to the `x86_64-virtualbox-base` OVF from the previous step.
+Creates
+`builds/centos-7-64-virtualbox-puppet/centos-7-64-virtualbox-puppet.ovf`.
+Password for `root` account is `ebrc`.
+
 
     packer build  x86_64-virtualbox-puppet.json
 
@@ -51,6 +55,7 @@ Adds Puppet to the `x86_64-virtualbox-base` OVF from the previous step. Creates
 Converts `x86_64-virtualbox-puppet` OVF to a Vagrant box and publishes a
 **public** box as `ebrc/centos-7-64-puppet` on Atlas. Creates
 `builds/vagrant/virtualbox/centos-7-64-virtualbox-puppet.box`.
+Password for `root` account is now `vagrant`.
 
 Lookup the current version in the json file.
 

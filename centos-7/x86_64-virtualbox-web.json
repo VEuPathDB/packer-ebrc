@@ -77,8 +77,8 @@
       "scripts": [
         "scripts/yumupdate.sh",
         "scripts/reinstall-vbox-guestaddtions.sh",
-        "scripts/removepuppet.sh",
-        "scripts/installsshuttle.sh",
+        "scripts/remove_puppet.sh",
+        "scripts/install_sshuttle.sh",
         "scripts/cleanup.sh",
         "scripts/write_packer_build_state",
         "scripts/zerodisk.sh"

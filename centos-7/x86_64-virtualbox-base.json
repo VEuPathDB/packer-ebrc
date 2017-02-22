@@ -25,6 +25,7 @@
       "scripts": [
         "scripts/install-vbox-guestadditions.sh",
         "scripts/remove_extra_kernels.sh",
+        "scripts/network_init_devtimeout.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ]

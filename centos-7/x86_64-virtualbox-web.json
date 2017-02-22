@@ -20,6 +20,7 @@
       "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-web",
       "type": "virtualbox-ovf",
       "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
+      "headless": "true",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
@@ -95,14 +96,20 @@
   ],
 
   "post-processors": [
-    [{
-      "type": "vagrant",
-      "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-web.box",
-      "keep_input_artifact": false,
-      "include": [
-        "builds/build_state"
-      ]
-    }]
+    [
+      {
+        "type": "vagrant",
+        "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-web.box",
+        "keep_input_artifact": false,
+        "include": [
+          "builds/build_state"
+        ]
+      },
+      {
+        "type": "shell-local",
+        "script": "bin/webdev_postprocessor.sh"
+      }
+    ]
   ]
 
 }

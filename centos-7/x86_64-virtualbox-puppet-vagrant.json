@@ -1,6 +1,6 @@
 {
   "variables": {
-    "version": "1.0.16",
+    "version": "",
     "template_name": "centos-7-64",
     "description": "CentOS 7 with Puppet 4",
     "provisioner": "virtualbox",
@@ -14,6 +14,7 @@
       "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet-vagrant",
       "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet",
       "type": "virtualbox-ovf",
+      "headless": "true",
       "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
       "ssh_pty": "true",
       "ssh_username": "{{user `ssh_username`}}",
@@ -24,6 +25,10 @@
     }
   ],
   "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "if [ \"{{user `version`}}\" == \"\" ]; then echo 'version not set'; exit 1; fi"
+    },
     {
       "type": "puppet-masterless",
       "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}} PATH=$PATH:/opt/puppetlabs/bin puppet apply --verbose  --detailed-exitcodes --modulepath='{{.ModulePath}}' {{.ManifestFile}}",

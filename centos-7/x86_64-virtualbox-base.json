@@ -51,7 +51,7 @@
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
       "ssh_port": 22,
-      "ssh_wait_timeout": "10000s",
+      "ssh_wait_timeout": "60m",
       "shutdown_command": "/sbin/halt -h -p",
       "guest_additions_path": "VBoxGuestAdditions.iso",
       "virtualbox_version_file": ".vbox_version",

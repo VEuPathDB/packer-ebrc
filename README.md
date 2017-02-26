@@ -1,3 +1,3 @@
-# Packer templates for EuPathDB Bioinformatics Resource Center
+## Packer templates for EuPathDB BRC
 
 

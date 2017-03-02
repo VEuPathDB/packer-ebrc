@@ -15,20 +15,20 @@
       "provisioner": "qemu",
 
       "localstore": "builds",
-      "disk_size": "10000"
+      "disk_size": "25000"
     },
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}.img",
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-base",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-base.img",
 
       "type": "qemu",
-      "format": "raw",
+      "format": "qcow2",
       "accelerator": "kvm",
       "disk_size": "{{ user `disk_size`}}",
 
-      "headless": false,
+      "headless": "true",
 
       "boot_wait": "40s",
       "boot_command": [
@@ -57,15 +57,9 @@
       "type": "shell",
       "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
       "scripts": [
-        "scripts/bootstrap-puppet.sh"
-      ]
-    },
-
-    {
-      "type": "shell",
-      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
-      "scripts": [
         "scripts/yumupdate.sh",
+        "scripts/remove_extra_kernels.sh",
+        "scripts/network_init_devtimeout.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ]

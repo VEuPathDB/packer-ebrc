@@ -23,8 +23,9 @@
       "type": "shell",
       "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
       "scripts": [
-        "scripts/install-vbox-guestadditions.sh",
+        "scripts/yumupdate.sh",
         "scripts/remove_extra_kernels.sh",
+        "scripts/install-vbox-guestadditions.sh",
         "scripts/network_init_devtimeout.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"

@@ -3,62 +3,56 @@
   "variables":
     {
       "template_name": "centos-7-64",
-      "template_os": "RedHat_64",
-
+      "provisioner": "qemu",
       "ssh_username": "root",
       "ssh_password": "ebrc",
-
-      "iso_url": "http://reflector.westga.edu/repos/CentOS/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso",
-      "iso_checksum": "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
-      "iso_checksum_type": "sha256",
-
-      "provisioner": "qemu",
-
       "localstore": "builds",
-      "disk_size": "10000"
+      "memory_size": "1024",
+      "cpu_count": "2",
+      "appdb_disk_size": "512000",
+      "userdb_disk_size": "51200",
+      "data_disk_size": "256000"
     },
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}.img",
-
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-web.img",
       "type": "qemu",
-      "format": "raw",
-      "accelerator": "kvm",
-      "disk_size": "{{ user `disk_size`}}",
-
-      "headless": false,
-
-      "boot_wait": "40s",
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
-      ],
-
-      "http_directory": "http",
-
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_url": "{{user `iso_url`}}",
-
+      "format": "qcow2",
+      "iso_url": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.img",
+      "iso_checksum_type": "none",
+      "disk_image": "true",
+      "headless": "true",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
       "ssh_port": 22,
       "ssh_wait_timeout": "60m",
-
-      "shutdown_command": "/sbin/halt -h -p"
-
+      "shutdown_command": "/sbin/halt -h -p",
+      "qemuargs": [ 
+        [ "-m", "{{user `memory_size`}}" ],
+        [ "-smp", "{{user `cpu_count`}}" ],
+        [ "-rtc", "base=utc" ]
+      ]
     }
   ],
 
   "provisioners": [
     {
+      "type": "shell-local",
+      "command": "bin/export_ebrc_puppet"
+    },
+
+    {
+      "type": "file",
+      "source": "scratch/puppet",
+      "destination": "/tmp"
+    },
+
+    {
       "type": "shell",
-      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
-      "scripts": [
-        "scripts/bootstrap-puppet.sh"
-      ]
+      "inline": ["PATH=$PATH:/opt/puppetlabs/bin puppet apply --environment=savm --codedir=/tmp/puppet/code /tmp/puppet/code/environments/savm/manifests"]
     },
 
     {
@@ -66,19 +60,13 @@
       "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
       "scripts": [
         "scripts/yumupdate.sh",
+        "scripts/remove_puppet.sh",
+        "scripts/cleanup-oracle.sh",
+        "scripts/install_sshuttle.sh",
         "scripts/cleanup.sh",
+        "scripts/write_packer_build_state",
         "scripts/zerodisk.sh"
       ]
     }
-  ],
-
-  "push": {
-    "name": "mheiges/{{user `template_name`}}",
-    "vcs": false,
-    "exclude": [
-      "build",
-      "packer_cache"
-    ]
-  }
-
+  ]
 }

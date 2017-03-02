@@ -1,0 +1,43 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7-64",
+      "provisioner": "qemu",
+      "ssh_username": "root",
+      "ssh_password": "ebrc",
+      "localstore": "builds"
+    },
+
+  "builders": [
+    {
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet.img",
+      "type": "qemu",
+      "format": "qcow2",
+      "iso_url": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-base/{{user `template_name`}}-{{user `provisioner`}}-base.img",
+      "iso_checksum_type": "none",
+      "disk_image": "true",
+      "headless": "true",
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "5m",
+      "shutdown_command": "/sbin/halt -h -p"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/bootstrap-puppet.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ]
+
+}

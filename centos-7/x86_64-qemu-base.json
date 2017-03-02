@@ -1,0 +1,84 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7-64",
+      "template_os": "RedHat_64",
+
+      "ssh_username": "root",
+      "ssh_password": "ebrc",
+
+      "iso_url": "http://reflector.westga.edu/repos/CentOS/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso",
+      "iso_checksum": "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
+      "iso_checksum_type": "sha256",
+
+      "provisioner": "qemu",
+
+      "localstore": "builds",
+      "disk_size": "10000"
+    },
+
+  "builders": [
+    {
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}",
+      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}.img",
+
+      "type": "qemu",
+      "format": "raw",
+      "accelerator": "kvm",
+      "disk_size": "{{ user `disk_size`}}",
+
+      "headless": false,
+
+      "boot_wait": "40s",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+
+      "http_directory": "http",
+
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "60m",
+
+      "shutdown_command": "/sbin/halt -h -p"
+
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/bootstrap-puppet.sh"
+      ]
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",
+      "scripts": [
+        "scripts/yumupdate.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+
+  "push": {
+    "name": "mheiges/{{user `template_name`}}",
+    "vcs": false,
+    "exclude": [
+      "build",
+      "packer_cache"
+    ]
+  }
+
+}

@@ -3,4 +3,4 @@
 **/scratch/**
 **/packer_cache/**
 playbook.retry
-
+*_dashboard.json

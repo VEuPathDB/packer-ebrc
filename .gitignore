@@ -2,3 +2,5 @@
 **/builds/**
 **/scratch/**
 **/packer_cache/**
+playbook.retry
+

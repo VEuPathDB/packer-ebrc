@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Obtain Puppet manifests as a git archive. (Git archives can not be
-# commited to). Production hiera data is excluded.
+# commited to). Production hiera data is excluded; this is especially
+# critical as an extra precaution for qemu builds which copy puppet code
+# to the guest (and hopefully removed in cleanup).
 
 GIT_REPO='git@git.apidb.org:puppet4.git'
 

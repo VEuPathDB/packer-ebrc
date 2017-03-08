@@ -2,4 +2,5 @@
 class vagrant {
   contain ::vagrant::vagrant_user
   contain ::vagrant::root_user
+  contain ::vagrant::packages
 }

@@ -61,7 +61,7 @@
 
     {
       "type": "shell",
-      "inline": ["PATH=$PATH:/opt/puppetlabs/bin puppet apply --environment=savm --codedir=/media/sf_scratch/puppet/code /media/sf_scratch/puppet/code/environments/savm/manifests"]
+      "inline": ["PATH=$PATH:/opt/puppetlabs/bin puppet apply --detailed-exitcodes --environment=savm --codedir=/media/sf_scratch/puppet/code /media/sf_scratch/puppet/code/environments/savm/manifests"]
     },
 
     {

@@ -20,10 +20,10 @@ campus network.
 
 The builds are incrementally provisioned in four stages.
 
-- a minimum CentOS OVF image
-- addition of Puppet to the CentOS OVF image
-- conversion of the OVF image to a Vagrant box
-- Puppet provisioning of web server software and configurations to the Vagrant box
+  0. a minimum CentOS OVF image (`x86_64-virtualbox-base.json`)
+  0. addition of Puppet to the CentOS OVF image (`x86_64-virtualbox-puppet.json`)
+  0. conversion of the OVF image to a Vagrant box (`x86_64-virtualbox-puppet-vagrant.json`)
+  0. Puppet provisioning of web server software and configurations to the Vagrant box (`x86_64-virtualbox-web.json`)
 
 Each build step depends on the artifacts from the previous step.
 
@@ -53,10 +53,10 @@ Password for `root` account is `ebrc`.
 #### x86_64-virtualbox-puppet-vagrant.json
 
 Converts `x86_64-virtualbox-puppet` OVF to a Vagrant box and publishes a
-**public** box as `ebrc/centos-7-64-puppet` on Atlas. Creates
-`builds/vagrant/virtualbox/centos-7-64-virtualbox-puppet.box` with a
-version based on build timestamp, `%Y%m%d`. Password for `root` account
-is now `vagrant`.
+**public** box as `ebrc/centos-7-64-puppet` on Atlas with the box
+version derived from the build timestamp, `%Y%m%d`. Creates
+`builds/vagrant/virtualbox/centos-7-64-virtualbox-puppet.box`. The
+password for `root` account is now `vagrant`.
 
 Set `ATLAS_TOKEN` environment variable and run the build command,
 passing in the current date as the box `version` variable.
@@ -70,8 +70,8 @@ passing in the current date as the box `version` variable.
 Converts `x86_64-virtualbox-puppet` OVF to Vagrant box with EBRC
 WDK-based web development support. Creates
 `builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box`. A
-`post-processor` step uploads the box to EBRC's box server and
-registers it in the `webdev.json`.
+`post-processor` step uploads the box and updated `webdev.json` to
+EBRC's box server.
 
 The provisioning in `x86_64-virtualbox-web.json` includes a run of
 `bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server

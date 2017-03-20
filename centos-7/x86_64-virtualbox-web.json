@@ -11,7 +11,8 @@
       "cpu_count": "2",
       "appdb_disk_size": "512000",
       "userdb_disk_size": "51200",
-      "data_disk_size": "256000"
+      "data_disk_size": "256000",
+      "webdev_postprocessor_dryrun": "0"
     },
 
   "builders": [
@@ -61,7 +62,14 @@
 
     {
       "type": "shell",
-      "inline": ["PATH=$PATH:/opt/puppetlabs/bin puppet apply --detailed-exitcodes --environment=savm --codedir=/media/sf_scratch/puppet/code /media/sf_scratch/puppet/code/environments/savm/manifests"]
+      "environment_vars": [
+        "puppet_environment=savm",
+        "puppet_code_dir=/media/sf_scratch/puppet/code"
+      ],
+      "execute_command": "{{.Vars}} sh '{{.Path}}'",
+      "scripts": [
+        "scripts/puppet-apply.sh"
+      ]
     },
 
     {
@@ -108,6 +116,9 @@
       },
       {
         "type": "shell-local",
+        "environment_vars": [
+          "WEBDEV_POSTPROCESSOR_DRYRUN={{user `webdev_postprocessor_dryrun`}}"
+        ],
         "script": "bin/webdev_postprocessor.sh"
       }
     ]

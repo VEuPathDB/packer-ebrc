@@ -65,6 +65,8 @@ passing in the current date as the box `version` variable.
 
     packer build -var "version=$(date +'%Y%m%d')" x86_64-virtualbox-puppet-vagrant.json
 
+    packer build -var "phase=testing version=$(date +'%Y%m%d')" x86_64-virtualbox-puppet-vagrant.json
+
 #### x86_64-virtualbox-web.json
 
 Converts `x86_64-virtualbox-puppet` OVF to Vagrant box with EBRC
@@ -86,3 +88,7 @@ then build.
     CHANGELOG="brief notes about any signficant changes"
     packer build x86_64-virtualbox-web.json
 
+For testing, pass the `webdev_postprocessor_dryrun` variable with
+non-zero value. This disables uploading the files to the box server.
+
+    packer build -var 'webdev_postprocessor_dryrun=1' x86_64-virtualbox-web.json

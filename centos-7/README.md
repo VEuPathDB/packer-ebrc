@@ -7,6 +7,7 @@ Packer generation of virtual machine images for EuPathDB.
 - Packer
 - VirtualBox
 - [jq](https://stedolan.github.io/jq/)
+- sponge (`moreutils` RPM, Homebrew)
 
 **Tips:**
 
@@ -51,6 +52,10 @@ Password for `root` account is `ebrc`.
     packer build  x86_64-virtualbox-puppet.json
 
 #### x86_64-virtualbox-puppet-vagrant.json
+
+_This build is optional, it is not needed by
+`x86_64-virtualbox-web.json`. Only build this if you want to place an
+updated box on Atlas._
 
 Converts `x86_64-virtualbox-puppet` OVF to a Vagrant box and publishes a
 **public** box as `ebrc/centos-7-64-puppet` on Atlas with the box

@@ -7,8 +7,8 @@
       "ssh_username": "root",
       "ssh_password": "ebrc",
 
-      "iso_url": "http://mirror.cs.uwp.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
-      "iso_checksum": "f90e4d28fa377669b2db16cbcb451fcb9a89d2460e3645993e30e137ac37d284",
+      "iso_url": "http://centos.mirrors.wvstateu.edu/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso",
+      "iso_checksum": "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
       "iso_checksum_type": "sha256",
 
       "memory_size": "512",
@@ -48,6 +48,7 @@
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `iso_url`}}",
+      "headless": "true",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",

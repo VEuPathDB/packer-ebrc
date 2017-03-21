@@ -52,7 +52,11 @@ else
 fi
 
 echo 'EBRC: generating sha256 checksum'
-SHA2=(`shasum -a 256 builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box`)
+if type shasum >/dev/null 2>&1; then
+  SHA2=(`shasum -a 256 builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box`)
+else
+  SHA2=(`sha256sum builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box`)
+fi
 echo "EBRC: checksum is $SHA2"
 
 echo "EBRC: Appending an entry for this new version in '${LOCAL_WEBDEV_JSON}'."

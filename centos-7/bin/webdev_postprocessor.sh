@@ -81,15 +81,17 @@ jq \
 }
 ] )' "$LOCAL_WEBDEV_JSON" | sponge "$LOCAL_WEBDEV_JSON"
 
-echo 'EBRC: Create a directory on our vagrant box server'
-ssh "${BOX_SERVER}" "mkdir -p ${BOX_SERVER_PATH}/webdev/${VERSION}"
 
 if [[ "$WEBDEV_POSTPROCESSOR_DRYRUN" -eq 0 ]]; then
+  echo 'EBRC: Create a directory on our vagrant box server'
+  ssh "${BOX_SERVER}" "mkdir -p ${BOX_SERVER_PATH}/webdev/${VERSION}"
   echo 'EBRC: Upload the box to versioned directory, and json file to web root directory.'
   rsync -qaPv "$LOCAL_WEBDEV_JSON" "${BOX_SERVER}:${BOX_SERVER_PATH}/"
   rsync -qaPv builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box \
     "${BOX_SERVER}:${BOX_SERVER_PATH}/webdev/${VERSION}"
 else
+  echo 'EBRC: (DRY-RUN:) Create a directory on our vagrant box server'
+  echo "(DRY-RUN:) ssh ${BOX_SERVER}" "mkdir -p ${BOX_SERVER_PATH}/webdev/${VERSION}"
   echo 'EBRC: (DRY-RUN:) Upload the box to versioned directory, and json file to web root directory.'
   echo "(DRY-RUN:) rsync -qaPv $LOCAL_WEBDEV_JSON" "${BOX_SERVER}:${BOX_SERVER_PATH}/"
   echo "(DRY-RUN:) rsync -qaPv builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box \

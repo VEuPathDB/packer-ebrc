@@ -1,0 +1,25 @@
+- set_fact: buildnumber="{{ dashboard.wdk.buildnumber }}"
+- set_fact: product="{{ dashboard.wdk.modelname }}"
+
+  # REFACTOR: {{ build_dir }}/{{ product }} VARIABLE MUST MATCH PACKER TEMPLATE
+- name: remove any existing {{ build_dir }}/{{ product }}
+  file: path={{ build_dir }}/{{ product }}
+        state=absent
+  when: do_full_rebuild|bool == True
+
+- name: running Packer (this will take a while)
+  command: >
+    packer build
+      -var "buildnumber={{ buildnumber }}"
+      -var "product={{ product }}"
+      -var "headless=true"
+      {{ packer_dir }}/x86_64-qemu-savm.json
+  async: 3600
+  poll: 5
+  args:
+    chdir: "{{ packer_dir }}"
+    creates:
+      - "{{ build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.root.img"
+      - "{{ build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.appdb.img"
+      - "{{ build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.userdb.img"
+      - "{{ build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.data.img"

@@ -1,0 +1,5 @@
+- include_vars: variables.yml
+
+- name: make apiSiteFilesMirror staging directory
+  file: path="{{ staging_dir }}/{{ product }}/apiSiteFilesMirror"
+        state=directory

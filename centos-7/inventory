@@ -1,5 +1,0 @@
-[source_webserver]
-#w1.foo.org           ansible_user=mheiges
-
-[buildhost]
-localhost               ansible_connection=local

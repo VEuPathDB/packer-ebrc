@@ -1,0 +1,53 @@
+# Get site-specific build parameters from the /dashboard JSON API at
+# {{ source_website }} and write them to a {{ source_website }}_dashboard.json
+# file that will be included as a var source by subsequent plays.
+#
+# If the json file already exists and the run is `do_full_rebuild==False`
+# then the file is used instead of making a new call to the /dashboard API.
+#
+- include_vars: variables.yml
+
+- name: Check for existing {{ staging_dir }}/{{ source_website }}_dashboard.json
+  stat: path="{{ staging_dir }}/{{ source_website }}_dashboard.json"
+  register: dashboard_json
+
+- include_vars: "{{ staging_dir }}/{{ source_website }}_dashboard.json"
+  when: dashboard_json.stat.exists == True
+
+- name: "Get environment from /dashboard"
+  uri:
+    url: "http://{{ source_website }}/dashboard/json"
+    user: "{{ dashboard_username }}"
+    password: "{{ dashboard_password }}"
+  when: dashboard_json.stat.exists == False or do_full_rebuild|bool == True
+  register: _dashboard_raw
+  failed_when: "_dashboard_raw.json.wdk is not defined"
+
+  # set vars from either /dashboard URI (if new uri request was made) or
+  # json file (if /dashboard URI was skipped and the file exists from
+  # a previous run)
+- name: set buildnumber from direct /dashboard request
+  set_fact: buildnumber="{{ _dashboard_raw.json.wdk.buildnumber }}"
+  when: _dashboard_raw.json is defined
+- name: set buildnumber from cached {{ source_website }}_dashboard.json file
+  set_fact: buildnumber="{{ dashboard.wdk.buildnumber }}"
+  when: _dashboard_raw.json is not defined
+- name: set product from direct /dashboard request
+  set_fact: product="{{ _dashboard_raw.json.wdk.modelname }}"
+  when: _dashboard_raw.json is defined
+- name: set product from cached {{ source_website }}_dashboard.json file
+  set_fact: product="{{ dashboard.wdk.modelname }}"
+  when: _dashboard_raw.json is not defined
+
+  # This is a vars file that will be used by subsequent plays.
+  # The vars are in the `dashboard` namespace, e.g.
+  # `dashboard.wdk.buildnumber`
+  # `dashboard.svn.locations.0.location.remote`
+- name: "Create {{ source_website }}_dashboard.json"
+  copy: content="{\"dashboard\":{{ _dashboard_raw.json }}}"
+        dest="{{ staging_dir }}/{{ source_website }}_dashboard.json"
+  when: dashboard_json.stat.exists == False or do_full_rebuild|bool == True
+
+- name: make staging directory
+  file: path="{{ staging_dir }}/{{ product }}"
+        state=directory

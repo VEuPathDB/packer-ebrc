@@ -1,0 +1,12 @@
+- set_fact: buildnumber="{{ dashboard.wdk.buildnumber }}"
+- set_fact: product="{{ dashboard.wdk.modelname }}"
+
+- set_fact: appdbImageSizeGB="{{ ((dashboard.wdk.databases.appdb.sizeondisk|int * 1.10 ) +5) | round(1, 'ceil') }}G"
+- set_fact: appdb_img="{{ staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.appdb.img"
+
+- file: path="{{ appdb_img }}" state=absent
+  when: do_full_rebuild|bool == True
+- name: "qemu-img create {{ appdbImageSizeGB }} appdb image"
+  command: "qemu-img create -f qcow2 {{ appdb_img }} {{ appdbImageSizeGB }}"
+  args:
+    creates: "{{ appdb_img }}"

@@ -1,0 +1,52 @@
+# Assemble a collection of
+#   - root Qemu disk image pre-provisioned with OS and WDK-based website
+#     software dependencies. This Packer-built image must exist before
+#     running this playbook.
+#   - direct attached virtual images. These are created by this playbook
+#     and sized according to site-specific needs.
+#     - appdb.img - for WDK application database data files
+#     - userdb.img - for WDK user database data files
+#     - data.img - for auxiliary data files (e.g. download and webservice flat files)
+#
+# This playbook leverages Packer to boot the root image, attach and format the additional images.
+# This collection of images are collected together in a single directory builds/ProductDB
+# directory.
+---
+
+# tasks to do: run Packer to create the root image if it does not exist.
+
+- hosts: buildhost
+  gather_facts: no
+  tasks:
+    - name: "Add hosts:"
+      add_host:
+        name="{{ source_website }}"
+        groups=source_webserver
+        ansible_user=mheiges
+        # TODO: define ansible_user in inventory
+
+    - include: tasks/make_local_build_dirs.yml
+    - include: tasks/get_vars_from_dashboard.yml
+    - include: tasks/cache_site_data.yml
+
+
+- hosts: source_webserver
+  gather_facts: no
+  vars_files: [
+    "{{ staging_dir }}/{{ source_website }}_dashboard.json",
+    variables.yml
+  ]
+  tasks:
+    - include: tasks/cache_apisitefiles.yml
+
+- hosts: buildhost
+  gather_facts: no
+  vars_files: [
+    "{{ staging_dir }}/{{ source_website }}_dashboard.json",
+    variables.yml
+  ]
+  tasks:
+    - include: tasks/create_appdb_image.yml
+    - include: tasks/create_userdb_image.yml
+    - include: tasks/create_data_image.yml
+    - include: tasks/run_savm_packer.yml

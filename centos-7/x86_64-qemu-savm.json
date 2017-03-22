@@ -1,0 +1,68 @@
+{
+
+  "variables":
+    {
+      "template_name": "centos-7-64",
+      "provisioner": "qemu",
+      "ssh_username": "root",
+      "ssh_password": "ebrc",
+      "headless": "true",
+      "localstore": "builds",
+      "memory_size": "1024",
+      "cpu_count": "2",
+      "appdb_disk_size": "512000",
+      "userdb_disk_size": "51200",
+      "data_disk_size": "256000",
+      "product": "TrichDB",
+      "buildnumber": "30"
+    },
+
+  "builders": [
+    {
+      "output_directory": "{{user `localstore`}}/{{user `product`}}",
+      "vm_name": "{{user `product`}}_{{user `buildnumber`}}.root.img",
+      "type": "qemu",
+      "format": "qcow2",
+      "iso_url": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/{{user `template_name`}}-{{user `provisioner`}}-web.img",
+      "iso_checksum_type": "none",
+      "disk_image": "true",
+      "headless": "{{user `headless`}}",
+      "ssh_pty" : "true",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "/sbin/halt -h -p",
+      "qemuargs": [ 
+        [ "-m", "{{user `memory_size`}}" ],
+        [ "-smp", "{{user `cpu_count`}}" ],
+        [ "-rtc", "base=utc" ],
+        [ "-drive", "file={{user `localstore`}}/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.root.img,if=virtio,index=0,media=disk"],
+        [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.appdb.img,if=virtio,index=1,media=disk"],
+        [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.userdb.img,if=virtio,index=2,media=disk"],
+        [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.data.img,if=virtio,index=3,media=disk"]
+      ]
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
+      "scripts": [
+        "scripts/prepare_webdev_disks.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "shell-local",
+      "inline": [
+        "mv {{user `localstore`}}/staging/{{user `product`}}/*.img {{user `localstore`}}/{{user `product`}}/"
+      ]
+    }
+  ]
+}

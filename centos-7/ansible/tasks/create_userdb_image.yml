@@ -1,8 +1,8 @@
-- set_fact: buildnumber="{{ dashboard.wdk.buildnumber }}"
-- set_fact: product="{{ dashboard.wdk.modelname }}"
+- set_fact: buildnumber="{{ ebrc.wdk.buildnumber }}"
+- set_fact: product="{{ ebrc.wdk.modelname }}"
 
-- set_fact: userdbImageSizeGB="{{ ((dashboard.wdk.databases.userdb.sizeondisk|int * 1.10 ) +5) | round(1, 'ceil') }}G"
-- set_fact: userdb_img="{{ staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.userdb.img"
+- set_fact: userdbImageSizeGB="{{ ((ebrc.wdk.databases.userdb.sizeondisk|int * 1.10 ) +5) | round(1, 'ceil') }}G"
+- set_fact: userdb_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.userdb.img"
 
 - file: path="{{ userdb_img }}" state=absent
   when: do_full_rebuild|bool == True

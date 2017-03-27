@@ -5,12 +5,12 @@
 #
 
 - name: "set_fact buildnumber"
-  set_fact: buildnumber="{{ dashboard.wdk.buildnumber }}"
+  set_fact: buildnumber="{{ ebrc.wdk.buildnumber }}"
 
 - name: "set_fact product"
-  set_fact: product="{{ dashboard.wdk.modelname }}"
+  set_fact: product="{{ ebrc.wdk.modelname }}"
 
-- set_fact: cache_dir="{{ staging_dir }}/{{ product }}/apiSiteFilesMirror/{{ product }}"
+- set_fact: cache_dir="{{ packer_staging_dir }}/{{ product }}/apiSiteFilesMirror/{{ product }}"
 
 - name: synchronize apiSiteFilesMirror to local cache at {{ cache_dir }}
   synchronize:

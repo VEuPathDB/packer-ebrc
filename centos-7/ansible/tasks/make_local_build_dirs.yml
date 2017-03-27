@@ -1,9 +1,9 @@
 - include_vars: variables.yml
 
-- name: "ensure {{ build_dir }}"
-  file: path="{{ build_dir }}"
+- name: "ensure {{ packer_build_dir }}"
+  file: path="{{ packer_build_dir }}"
         state=directory
 
-- name: "ensure {{ staging_dir }}"
-  file: path="{{ staging_dir }}"
+- name: "ensure {{ packer_staging_dir }}"
+  file: path="{{ packer_staging_dir }}"
         state=directory

@@ -18,15 +18,10 @@
 - hosts: buildhost
   gather_facts: no
   tasks:
-    - name: "Add hosts:"
-      add_host:
-        name="{{ source_website }}"
-        groups=source_webserver
-        ansible_user=mheiges
-        # TODO: define ansible_user in inventory
-
+    - debug:
+        msg: "{{ ebrc }}"
     - include: tasks/make_local_build_dirs.yml
-    - include: tasks/get_vars_from_dashboard.yml
+    #- include: tasks/get_vars_from_dashboard.yml
     - include: tasks/cache_site_data.yml
 
 

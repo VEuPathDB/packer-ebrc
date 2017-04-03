@@ -6,7 +6,7 @@ class vmbuilder::vmbuilder_user {
     gid    => '60001',
   }
 
-  group { 'vagrant':
+  group { 'eupa':
     ensure => present,
     gid    => '700',
   }
@@ -17,7 +17,7 @@ class vmbuilder::vmbuilder_user {
     managehome => true,
     password   => '$1$28j82$O4U8SYWisuYd2lo/G7b031', # vmbuilder
     gid        => 'vmbuilder',
-    groups     => [ 'vmbuilder', 'vagrant'],
+    groups     => [ 'vmbuilder', 'eupa'],
     shell      => '/bin/bash',
     require    => Group[ 'vmbuilder' ],
   }

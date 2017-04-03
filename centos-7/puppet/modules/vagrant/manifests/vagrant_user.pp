@@ -6,6 +6,11 @@ class vagrant::vagrant_user {
     gid    => '60001',
   }
 
+  group { 'eupa':
+    ensure => present,
+    gid    => '700',
+  }
+
   user { 'vagrant':
     ensure     => present,
     uid        => '60001',
@@ -22,7 +27,7 @@ class vagrant::vagrant_user {
     owner   => 'vagrant',
     group   => 'vagrant',
     mode    => '0600',
-    require => User[ 'vagrant' ],
+    require => User[ 'vagrant', 'eupa' ],
   }
 
   ssh_authorized_key { 'vagrant':

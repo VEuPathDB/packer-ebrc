@@ -1,0 +1,3 @@
+- src: https://github.com/mheiges/ansible-ebrcwebsite
+  name: ebrcwebsite
+

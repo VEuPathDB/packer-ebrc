@@ -5,12 +5,22 @@ First run Packer to create a qemu image provisioned with our `savm` Puppet
 environment. Currently that means
 
   - `packer build x86_64-qemu-base.json`
+    - Installs the base operating system.
+    - Creates `centos-7-64-qemu-base/centos-7-64-qemu-base.img`
+
   - `packer build x86_64-qemu-puppet.json`
+    - Installs Puppet agent.
+    - Depends on `centos-7-64-qemu-base/centos-7-64-qemu-base.img`
+    - Creates `centos-7-64-qemu-puppet/centos-7-64-qemu-puppet.img`
+
   - `packer build x86_64-qemu-web.json`
+    - Installs software dependencies for EBRC WDK-based websites, including Tomcat Instance Framework, et al.
+    - Depends on `centos-7-64-qemu-puppet/centos-7-64-qemu-puppet.img`
+    - Creates `
 
 This is similar to the stages for building our Vagrant/VirtualBox boxes.
 These stages may be collapsed into one in the future for the qemu builds
-because we don't need the intermediate artifacts for that hypervisor.
+because we don't need the intermediate artifacts for the qemu hypervisor.
 
 - ansible 
   - determines the site-specific parameter values
@@ -42,6 +52,7 @@ The playbook must be run on the KVM/Packer host.
 
     ansible-playbook -i ansible/inventory ansible/collate.yml --extra-vars "source_website=w1.cryptodb.org do_full_rebuild=true"
 
+    ansible-playbook -i ansible/dyninventory.py ansible/collate.yml --extra-vars "do_full_rebuild=true"
 
 
 ### To Do

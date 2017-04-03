@@ -50,7 +50,24 @@
       "type": "shell",
       "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
       "scripts": [
-        "scripts/prepare_webdev_disks.sh",
+        "scripts/prepare_webdev_disks.sh"
+      ]
+    },
+    {
+      "type": "shell-local",
+      "command": "ansible-galaxy install -v -r ansible/requirements.yml -p ansible/roles/"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "ansible/installwdksite.yml",
+      "extra_arguments": [
+        "--settings_file=installsite.yml"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
+      "scripts": [
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ]

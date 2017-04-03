@@ -17,7 +17,7 @@ class vagrant::vagrant_user {
     managehome => true,
     password   => '$1$wBXGTRZ9$z8esySNE1sjAl9HSLwXMn1', # vagrant
     gid        => 'vagrant',
-    groups     => [ 'vagrant', ],
+    groups     => [ 'vagrant', 'eupa', ],
     shell      => '/bin/bash',
     require    => Group[ 'vagrant' ],
   }
@@ -27,7 +27,7 @@ class vagrant::vagrant_user {
     owner   => 'vagrant',
     group   => 'vagrant',
     mode    => '0600',
-    require => User[ 'vagrant', 'eupa' ],
+    require => User[ 'vagrant' ],
   }
 
   ssh_authorized_key { 'vagrant':

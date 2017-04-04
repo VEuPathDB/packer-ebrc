@@ -90,7 +90,7 @@ If this build has significant changes set some notes in the `CHANGELOG`
 shell environment variable (defaults to `routine update` if not set),
 then build.
 
-    CHANGELOG="brief notes about any signficant changes"
+    export CHANGELOG="brief notes about any signficant changes"
     packer build x86_64-virtualbox-web.json
 
 For testing, pass the `webdev_postprocessor_dryrun` variable with

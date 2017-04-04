@@ -32,8 +32,6 @@ mkdir -p $APPDB_DIR
 mkdir -p $USERDB_DIR
 mkdir -p $DATA_DIR
 
-chown oracle:oinstall -R /u02
-
 # UPDATE /ETC/FSTAB
 cat >> /etc/fstab <<EOF
 
@@ -44,3 +42,8 @@ EOF
 
 # MOUNT ALL
 mount -a
+
+# UPDATE PERMISSIONS ON MOUNTED DEVICES
+chown oracle:oinstall $USERDB_DIR
+chown oracle:oinstall $APPDB_DIR
+chmod 1777 $DATA_DIR

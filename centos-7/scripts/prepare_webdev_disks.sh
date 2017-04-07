@@ -35,9 +35,9 @@ mkdir -p $DATA_DIR
 # UPDATE /ETC/FSTAB
 cat >> /etc/fstab <<EOF
 
-LABEL=$APPDB_LABEL $APPDB_DIR ext4 defaults 0  0
-LABEL=$USERDB_LABEL $USERDB_DIR ext4 defaults 0  0
-LABEL=$DATA_LABEL $DATA_DIR ext4 defaults 0  0
+LABEL=$APPDB_LABEL $APPDB_DIR ext4 nofail,defaults 0  0
+LABEL=$USERDB_LABEL $USERDB_DIR ext4 nofail,defaults 0  0
+LABEL=$DATA_LABEL $DATA_DIR ext4 nofail,defaults 0  0
 EOF
 
 # MOUNT ALL

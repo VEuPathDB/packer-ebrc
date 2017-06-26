@@ -8,7 +8,7 @@ LOCAL_WEBDEV_JSON='builds/vagrant/webdev.json'
 LOCAL_BOX='builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box'
 VERSION="$(date +'%Y%m%d')"
 BOX_URL='https://software.apidb.org/vagrant'
-BOX_SERVER='software.apidb.org'
+BOX_SERVER=${BOX_SERVER:-software.apidb.org}
 BOX_SERVER_PATH='/var/www/software.apidb.org/vagrant'
 
 . bin/functions

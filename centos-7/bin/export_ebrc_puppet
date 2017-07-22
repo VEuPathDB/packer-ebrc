@@ -20,7 +20,7 @@ echo "${GIT_REPO} - ${LAST_COMMIT}" > "${PUPPET_DIR}/PUPPET_REPO_VERSION"
 
 git ls-remote "$GIT_REPO" master
 
-git archive --remote "$GIT_REPO" "$LAST_COMMIT" \
+git archive --remote "$GIT_REPO" master \
   | tar -x -C "$PUPPET_DIR" \
     --exclude=code/environments/hashicorp\
     --exclude=code/environments/production 

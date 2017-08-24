@@ -1,0 +1,14 @@
+{
+  "name": "local/profiles",
+  "version": "0.0.0",
+  "author": "ebrc",
+  "summary": "Local profiles",
+  "license": "Apache-2.0",
+  "source": "",
+  "project_page": null,
+  "issues_url": null,
+  "dependencies": [
+    {"name":"ebrc/svncredentials"}
+  ]
+}
+

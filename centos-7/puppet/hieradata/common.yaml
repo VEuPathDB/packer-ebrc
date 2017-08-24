@@ -1,0 +1,4 @@
+---
+
+profiles::vagrant_cbil_svn_auth::svn_username:
+profiles::vagrant_cbil_svn_auth::svn_password:

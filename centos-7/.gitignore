@@ -1,3 +1,5 @@
 .DS_Store
 scratch
 RPMLIST
+puppet/modules
+puppet/.tmp

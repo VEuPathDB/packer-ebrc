@@ -1,6 +1,9 @@
 # Create vagrant account with sudo permission.
 class vagrant::vagrant_user {
 
+  include ::profiles::vagrant_cbil_svn_auth
+  User['vagrant'] -> Class['::profiles::vagrant_cbil_svn_auth']
+
   group { 'vagrant':
     ensure => present,
     gid    => '60001',

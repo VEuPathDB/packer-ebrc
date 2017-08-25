@@ -54,16 +54,26 @@
     },
 
     {
+      "type": "shell",
+      "inline": [ 
+        "/opt/puppetlabs/puppet/bin/gem install hiera-eyaml"
+      ]
+    },
+
+    {
       "type": "shell-local",
       "command": "cd puppet && librarian-puppet install --verbose"
-    },
-    {
+    },{
       "type": "file",
       "source": "puppet/hieradata",
       "destination": "/tmp"
     },{
+      "type": "file",
+      "source": "puppet/keys",
+      "destination": "/tmp"
+    },{
       "type": "puppet-masterless",
-      "puppet_bin_dir": "/opt/puppetlabs/bin",
+      "puppet_bin_dir": "/opt/puppetlabs/puppet/bin",
       "manifest_file": "puppet/manifests/vagrant.pp",
       "hiera_config_path": "puppet/hiera.yaml",
       "module_paths": ["puppet/modules"]

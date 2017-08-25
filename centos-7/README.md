@@ -9,6 +9,11 @@ Packer generation of virtual machine images for EuPathDB.
 - [jq](https://stedolan.github.io/jq/)
 - sponge (`moreutils` RPM, Homebrew)
 - [librarian-puppet](https://github.com/rodjek/librarian-puppet)
+- [hiera-eyaml](https://github.com/voxpupuli/hiera-eyaml) - if you want to edit encrypted hiera data
+- Public and private eys for hiera-eyaml in the `puppet/keys` directory
+of this project. Copy these from the Notes field of "Packer puppet
+hiera-eyaml keys" in Passpack. You'll need to manually fix the line
+wrapping to make valid keys.
 
 **Tips:**
 
@@ -89,8 +94,10 @@ directory must exist, even if empty, because Vagrant checks for its
 existence during its configuration validation phase, before provisioning
 steps are run. A missing directory wil result in Packer returning
 "`module_path[0] is invalid: stat puppet/modules: no such file or
-directory`"
+directory`". The hiera ddta for this provisioning uses
+[hiera-eyaml](https://github.com/voxpupuli/hiera-eyaml ).
 
+Then there is a second, separate Puppet provisioning of EBRC components.
 The provisioning in `x86_64-virtualbox-web.json` includes a run of
 `bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server
 deployments as a git archive into the `scratch` directory. (Git archives

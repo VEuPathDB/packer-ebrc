@@ -2,8 +2,15 @@
 version: 5
 defaults:
   datadir: "/tmp/hieradata"
-  data_hash: yaml_data
 hierarchy:
-  - name: "levels"
+  - name: "Encrypted data"
+    lookup_key: eyaml_lookup_key # eyaml backend
+    paths:
+      - "common.eyaml"
+    options:
+      pkcs7_private_key: /tmp/keys/private_key.pkcs7.pem
+      pkcs7_public_key:  /tmp/keys/public_key.pkcs7.pem
+  - name: "Normal data"
+    data_hash: yaml_data
     paths:
       - "common.yaml"

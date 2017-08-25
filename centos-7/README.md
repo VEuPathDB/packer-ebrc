@@ -12,8 +12,9 @@ Packer generation of virtual machine images for EuPathDB.
 - [hiera-eyaml](https://github.com/voxpupuli/hiera-eyaml) - if you want to edit encrypted hiera data
 - Public and private eys for hiera-eyaml in the `puppet/keys` directory
 of this project. Copy these from the Notes field of "Packer puppet
-hiera-eyaml keys" in Passpack. You'll need to manually fix the line
-wrapping to make valid keys.
+hiera-eyaml keys" in Passpack. The Passpack Notes field does not
+preserve line endings so you'll need to manually fix the line wrapping
+to make valid keys (i.e. replace spaces with newlines).
 
 **Tips:**
 

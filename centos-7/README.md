@@ -87,7 +87,9 @@ and Puppetfile. The modules directory will be empty when initially
 checked out from git, before librarian-puppet installs the modules. The
 directory must exist, even if empty, because Vagrant checks for its
 existence during its configuration validation phase, before provisioning
-steps are run.
+steps are run. A missing directory wil result in Packer returning
+"`module_path[0] is invalid: stat puppet/modules: no such file or
+directory`"
 
 The provisioning in `x86_64-virtualbox-web.json` includes a run of
 `bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server

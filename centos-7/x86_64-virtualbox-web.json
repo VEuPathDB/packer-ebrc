@@ -54,16 +54,11 @@
     },
 
     {
-      "type": "shell",
-      "inline": [ 
-        "/opt/puppetlabs/puppet/bin/gem install hiera-eyaml"
-      ]
-    },
-
-    {
       "type": "shell-local",
       "command": "cd puppet && librarian-puppet install --verbose"
-    },{
+    },
+    
+    {
       "type": "file",
       "source": "puppet/hieradata",
       "destination": "/tmp"

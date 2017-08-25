@@ -27,3 +27,10 @@ echo "Installing puppet"
 yum install -y puppet-agent
 
 echo "Puppet installed!"
+
+echo "Installing Gems for Puppet"
+# must use Puppet's gem so module is installed
+# in Puppet's gempath.
+/opt/puppetlabs/puppet/bin/gem install hiera-eyaml
+
+echo "Gems installed!"

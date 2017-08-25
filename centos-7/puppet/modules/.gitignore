@@ -1,0 +1,6 @@
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+# because Packer tests for this directory during parsing,
+# before running librarian-puppet

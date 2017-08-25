@@ -8,6 +8,7 @@ Packer generation of virtual machine images for EuPathDB.
 - VirtualBox
 - [jq](https://stedolan.github.io/jq/)
 - sponge (`moreutils` RPM, Homebrew)
+- [librarian-puppet](https://github.com/rodjek/librarian-puppet)
 
 **Tips:**
 
@@ -79,6 +80,14 @@ WDK-based web development support. Creates
 `builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box`. A
 `post-processor` step uploads the box and updated `webdev.json` to
 EBRC's box server.
+
+This includes provisioning the `vagrant` user via local Puppet manifests
+in the `puppet` directory. The modules are managed by librarian-puppet
+and Puppetfile. The modules directory will be empty when initially
+checked out from git, before librarian-puppet installs the modules. The
+directory must exist, even if empty, because Vagrant checks for its
+existence during its configuration validation phase, before provisioning
+steps are run.
 
 The provisioning in `x86_64-virtualbox-web.json` includes a run of
 `bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server

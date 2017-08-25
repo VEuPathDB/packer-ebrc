@@ -55,7 +55,7 @@
 
     {
       "type": "shell-local",
-      "command": "cd puppet && librarian-puppet install --verbose"
+      "command": "cd puppet && PATH=$PATH:$HOME/bin librarian-puppet install --verbose"
     },
     
     {

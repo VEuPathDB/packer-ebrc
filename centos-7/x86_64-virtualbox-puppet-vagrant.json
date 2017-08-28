@@ -29,14 +29,28 @@
       "type": "shell-local",
       "command": "if [ \"{{user `version`}}\" == \"\" ]; then echo 'version not set'; exit 1; fi"
     },
+
     {
-      "type": "puppet-masterless",
-      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}} PATH=$PATH:/opt/puppetlabs/bin puppet apply --verbose  --detailed-exitcodes --modulepath='{{.ModulePath}}' {{.ManifestFile}}",
-      "module_paths": [
-        "puppet/modules"
-      ],
-      "manifest_file": "puppet/manifests/vagrant.pp"
+      "type": "shell-local",
+      "command": "cd puppet && librarian-puppet install --verbose"
     },
+
+    {
+      "type": "file",
+      "source": "puppet/hieradata",
+      "destination": "/tmp"
+    },{
+      "type": "file",
+      "source": "puppet/keys",
+      "destination": "/tmp"
+    },{
+      "type": "puppet-masterless",
+      "manifest_file": "puppet/manifests/vagrant.pp",
+      "puppet_bin_dir": "/opt/puppetlabs/puppet/bin",
+      "hiera_config_path": "puppet/hiera.yaml",
+      "module_paths": ["puppet/modules"]
+    },
+
     {
       "type": "shell",
       "execute_command": "{{.Vars}} sh '{{.Path}}' {{user `required_modules`}}",

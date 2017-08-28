@@ -68,8 +68,8 @@
       "destination": "/tmp"
     },{
       "type": "puppet-masterless",
-      "puppet_bin_dir": "/opt/puppetlabs/puppet/bin",
       "manifest_file": "puppet/manifests/vagrant.pp",
+      "puppet_bin_dir": "/opt/puppetlabs/puppet/bin",
       "hiera_config_path": "puppet/hiera.yaml",
       "module_paths": ["puppet/modules"]
     },

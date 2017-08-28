@@ -1,12 +1,10 @@
 {
   "variables": {
-    "version": "",
     "template_name": "centos-7-64",
     "description": "CentOS 7 with Puppet 4",
     "provisioner": "virtualbox",
     "ssh_username": "root",
     "ssh_password": "ebrc",
-    "atlas_token": "{{env `ATLAS_TOKEN`}}",
     "localstore": "builds"
   },
   "builders": [
@@ -25,11 +23,6 @@
     }
   ],
   "provisioners": [
-    {
-      "type": "shell-local",
-      "command": "if [ \"{{user `version`}}\" == \"\" ]; then echo 'version not set'; exit 1; fi"
-    },
-
     {
       "type": "shell-local",
       "command": "cd puppet && librarian-puppet install --verbose"
@@ -66,18 +59,6 @@
         "type": "vagrant",
         "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-puppet.box",
         "keep_input_artifact": false
-      },
-      {
-        "type": "atlas",
-        "artifact": "ebrc/{{user `template_name`}}-puppet",
-        "artifact_type": "vagrant.box",
-        "token": "{{user `atlas_token`}}",
-        "metadata": {
-          "description": "{{user `description`}}",
-          "provider": "virtualbox",
-          "created_at": "{{timestamp}}",
-          "version": "{{user `version`}}"
-        }
       }
     ]
   ]

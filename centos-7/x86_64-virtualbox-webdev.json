@@ -3,7 +3,9 @@
   "variables":
     {
       "template_name": "centos-7-64",
-      "provisioner": "virtualbox",
+      "provider": "virtualbox",
+      "vm_name": "centos-7-webdev",
+      "short_vm_name": "webdev",
       "ssh_username": "root",
       "ssh_password": "ebrc",
       "localstore": "builds",
@@ -17,10 +19,10 @@
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-web",
+      "output_directory": "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}",
+      "vm_name": "{{user `vm_name`}}",
       "type": "virtualbox-ovf",
-      "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
+      "source_path": "{{user `localstore`}}/{{user `template_name`}}-puppet-{{user `provider`}}/{{user `template_name`}}-puppet-{{user `provider`}}.ovf",
       "headless": "true",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",
@@ -35,14 +37,14 @@
         [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
         [ "modifyvm", "{{.Name}}", "--ioapic", "on"],
 
-        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/appdb.vmdk", "--variant", "Standard", "--size", "{{user `appdb_disk_size`}}" ],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "1", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/appdb.vmdk" ],
+        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/appdb.vmdk", "--variant", "Standard", "--size", "{{user `appdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "1", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/appdb.vmdk" ],
 
-        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/userdb.vmdk", "--variant", "Standard", "--size", "{{user `userdb_disk_size`}}" ],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "2", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/userdb.vmdk" ],
+        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/userdb.vmdk", "--variant", "Standard", "--size", "{{user `userdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "2", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/userdb.vmdk" ],
 
-        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/data.vmdk", "--variant", "Standard", "--size", "{{user `data_disk_size`}}" ],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "3", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-web/data.vmdk" ]
+        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/data.vmdk", "--variant", "Standard", "--size", "{{user `data_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "3", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/data.vmdk" ]
       ]
     }
   ],
@@ -122,7 +124,7 @@
     [
       {
         "type": "vagrant",
-        "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-web.box",
+        "output": "builds/vagrant/{{user `provider`}}/{{user `vm_name`}}.box",
         "keep_input_artifact": false,
         "include": [
           "builds/build_state"
@@ -131,9 +133,15 @@
       {
         "type": "shell-local",
         "environment_vars": [
-          "WEBDEV_POSTPROCESSOR_DRYRUN={{user `webdev_postprocessor_dryrun`}}"
+          "BOX_POSTPROCESSOR_DRYRUN={{user `box_postprocessor_dryrun`}}",
+          "PROVIDER={{user `provider`}}",
+          "VM_NAME={{user `vm_name`}}",
+          "SHORT_VM_NAME={{user `short_vm_name`}}",
+          "BOX_NAME={{user `vm_name`}}.box",
+          "BOX_JSON=webdev.json",
+          "LOCAL_BOX=builds/vagrant/{{user `provider`}}/{{user `vm_name`}}.box"
         ],
-        "script": "bin/webdev_postprocessor.sh"
+        "script": "bin/vagrant_box_postprocessor.sh"
       }
     ]
   ]

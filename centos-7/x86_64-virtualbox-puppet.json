@@ -11,8 +11,8 @@
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet",
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-puppet-{{user `provisioner`}}",
+      "vm_name": "{{user `template_name`}}-puppet-{{user `provisioner`}}",
       "type": "virtualbox-ovf",
       "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}/{{user `template_name`}}-{{user `provisioner`}}.ovf",
       "headless": "true",

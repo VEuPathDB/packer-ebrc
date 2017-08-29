@@ -31,7 +31,7 @@ The builds are incrementally provisioned in four stages.
   0. a minimum CentOS OVF image (`x86_64-virtualbox-base.json`)
   0. addition of Puppet to the CentOS OVF image (`x86_64-virtualbox-puppet.json`)
   0. conversion of the OVF image to a Vagrant box (`x86_64-virtualbox-puppet-vagrant.json`)
-  0. Puppet provisioning of web server software and configurations to the Vagrant box (`x86_64-virtualbox-web.json`)
+  0. Puppet provisioning of web server software and configurations to the Vagrant box (`x86_64-virtualbox-webdev.json`)
 
 Each build step depends on the artifacts from the previous step.
 
@@ -41,45 +41,50 @@ Generate a VirtualBox OVF with minimal CentOS 7. Creates
 `builds/centos-7-64-virtualbox/centos-7-64-virtualbox.ovf`
 Password for `root` account is `ebrc`.
 
-    packer build  x86_64-virtualbox-base.json
+```bash
+$ packer build  x86_64-virtualbox-base.json
+```
 
 The http/ks.cfg drives the initial installation with a yum update as a
 %post script. VirtualBoxGuestAdditions are installed as a Packer
-provisioners script. Other Packer provisioners scripts remove extra
+provisioners script. Other Packer provisioner scripts remove extra
 kernels and zero the disks.
 
 #### x86_64-virtualbox-puppet.json
 
 Adds Puppet to the `x86_64-virtualbox-base` OVF from the previous step.
 Creates
-`builds/centos-7-64-virtualbox-puppet/centos-7-64-virtualbox-puppet.ovf`.
+`builds/centos-7-64-puppet-virtualbox/centos-7-64-puppet-virtualbox.ovf`.
 Password for `root` account is `ebrc`.
 
-
-    packer build  x86_64-virtualbox-puppet.json
+```bash
+$ packer build  x86_64-virtualbox-puppet.json
+```
 
 #### x86_64-virtualbox-puppet-vagrant.json
 
 _This build is optional, it is not needed by
-`x86_64-virtualbox-web.json`. Only build this if you want to place an
-updated box on Atlas._
+`x86_64-virtualbox-webdev.json`. Only build this when you want to place an
+updated CentOS box in our box repo._
 
-Converts `x86_64-virtualbox-puppet` OVF to a Vagrant box and publishes a
-**public** box as `ebrc/centos-7-64-puppet` on Atlas with the box
-version derived from the build timestamp, `%Y%m%d`. Creates
-`builds/vagrant/virtualbox/centos-7-64-virtualbox-puppet.box`. The
-password for `root` account is now `vagrant`.
+Converts the `x86_64-puppet-virtualbox` OVF from the previous step to a
+Vagrant-compatible box and publishes the box as
+`ebrc/centos-7-64-puppet` in our repo with the box version derived from
+the build timestamp, `%Y%m%d`. Creates
+`builds/vagrant/virtualbox/centos-7-64-puppet.box` on the Packer host. A
+post-processor runs `bin/vagrant_box_postprocessor.sh` to upload to our
+box repository and update the metadata json file.
 
-Set `ATLAS_TOKEN` environment variable and run the build command,
-passing in the current date as the box `version` variable.
+Box specifications for a Vagrantfile are
 
-    export ATLAS_TOKEN=.......
+```ruby
+vm_config.vm.box      = 'ebrc/centos-7-64-puppet',
+vm_config.vm.hostname = 'http://software.apidb.org/vagrant/centos-7-64-puppet.json'
+```
 
-    packer build -var "version=$(date +'%Y%m%d')" x86_64-virtualbox-puppet-vagrant.json
+The password for `root` account on this VM is `vagrant`.
 
-    packer build -var "phase=testing version=$(date +'%Y%m%d')" x86_64-virtualbox-puppet-vagrant.json
-
-#### x86_64-virtualbox-web.json
+#### x86_64-virtualbox-webdev.json
 
 Converts `x86_64-virtualbox-puppet` OVF to Vagrant box with EBRC
 WDK-based web development support. Creates
@@ -87,21 +92,31 @@ WDK-based web development support. Creates
 `post-processor` step uploads the box and updated `webdev.json` to
 EBRC's box server.
 
-This includes provisioning the `vagrant` user via local Puppet manifests
-in the `puppet` directory. The modules are managed by librarian-puppet
-and Puppetfile. The modules directory will be empty when initially
+Box specifications for a Vagrantfile are
+
+```ruby
+vm_config.vm.box      = 'ebrc/webdev',
+vm_config.vm.hostname = 'http://software.apidb.org/vagrant/webdev.json'
+```
+
+**Webdev Build Highlights**
+
+This build includes provisioning the `vagrant` user via local Puppet
+manifests in the `puppet` directory on the Packer host. The Puppet
+modules are managed by librarian-puppet and Puppetfile. The modules
+directory will be empty when this packer-ebrc project is initially
 checked out from git, before librarian-puppet installs the modules. The
 directory must exist, even if empty, because Vagrant checks for its
 existence during its configuration validation phase, before provisioning
 steps are run. A missing directory wil result in Packer returning
-"`module_path[0] is invalid: stat puppet/modules: no such file or
-directory`". The hiera ddta for this provisioning uses
+"`module_path[0] is invalid: stat puppet/modules: no such file or directory`".
+The hiera ddta for this provisioning uses
 [hiera-eyaml](https://github.com/voxpupuli/hiera-eyaml ).
 
 Then there is a second, separate Puppet provisioning of EBRC components.
-The provisioning in `x86_64-virtualbox-web.json` includes a run of
-`bin/export_ebrc_puppet` to obtain Puppet manifests for EBRC server
-deployments as a git archive into the `scratch` directory. (Git archives
+The provisioning in `x86_64-virtualbox-webdev.json` includes a run of
+`bin/export_ebrc_puppet` on the Packer host which obtains EBRC's Puppet
+manifests as a git archive into the `scratch` directory. (Git archives
 can not be commited to). Production hiera data is excluded from the
 export by this script.
 
@@ -109,10 +124,14 @@ If this build has significant changes set some notes in the `CHANGELOG`
 shell environment variable (defaults to `routine update` if not set),
 then build.
 
-    export CHANGELOG="brief notes about any signficant changes"
-    packer build x86_64-virtualbox-web.json
+```bash
+$ export CHANGELOG="brief notes about any signficant changes"
+$ packer build x86_64-virtualbox-webdev.json
+```
 
-For testing, pass the `webdev_postprocessor_dryrun` variable with
+For testing, pass the `box_postprocessor_dryrun` variable with
 non-zero value. This disables uploading the files to the box server.
 
-    packer build -var 'webdev_postprocessor_dryrun=1' x86_64-virtualbox-web.json
+```bash
+$ packer build -var 'box_postprocessor_dryrun=1' x86_64-virtualbox-webdev.json
+```

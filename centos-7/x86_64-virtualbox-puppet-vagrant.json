@@ -1,19 +1,20 @@
 {
   "variables": {
     "template_name": "centos-7-64",
+    "provider": "virtualbox",
     "description": "CentOS 7 with Puppet 4",
-    "provisioner": "virtualbox",
+    "vm_name": "centos-7-64-puppet",
     "ssh_username": "root",
     "ssh_password": "ebrc",
     "localstore": "builds"
   },
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet-vagrant",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet",
+      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-puppet-vagrant-{{user `provider`}}",
+      "vm_name": "{{user `vm_name`}}",
       "type": "virtualbox-ovf",
       "headless": "true",
-      "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet/{{user `template_name`}}-{{user `provisioner`}}-puppet.ovf",
+      "source_path": "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/{{user `vm_name`}}-{{user `provider`}}.ovf",
       "ssh_pty": "true",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
@@ -57,8 +58,20 @@
     [
       {
         "type": "vagrant",
-        "output": "builds/vagrant/{{.Provider}}/{{user `template_name`}}-{{.Provider}}-puppet.box",
+        "output": "builds/vagrant/{{user `provider`}}/{{user `vm_name`}}.box",
         "keep_input_artifact": false
+      },
+      {
+        "type": "shell-local",
+        "environment_vars": [
+          "BOX_POSTPROCESSOR_DRYRUN={{user `box_postprocessor_dryrun`}}",
+          "PROVIDER={{user `provider`}}",
+          "VM_NAME={{user `vm_name`}}",
+          "BOX_NAME={{user `vm_name`}}.box",
+          "BOX_JSON={{user `vm_name`}}.json",
+          "LOCAL_BOX=builds/vagrant/{{user `provider`}}/{{user `vm_name`}}.box"
+        ],
+        "script": "bin/vagrant_box_postprocessor.sh"
       }
     ]
   ]

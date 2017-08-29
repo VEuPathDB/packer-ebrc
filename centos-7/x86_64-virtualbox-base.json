@@ -7,8 +7,8 @@
       "ssh_username": "root",
       "ssh_password": "ebrc",
 
-      "iso_url": "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso",
-      "iso_checksum": "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
+      "iso_url": "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1707-01.iso",
+      "iso_checksum": "becbfcea718898877ab5dc3d875b11ab53cd03c9ef97c83399d8ad5bf5ecdb36",
       "iso_checksum_type": "sha256",
 
       "memory_size": "512",

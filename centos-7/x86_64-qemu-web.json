@@ -39,6 +39,10 @@
   ],
 
   "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "cd puppet && librarian-puppet install --verbose"
+    },
 
     {
       "type": "file",

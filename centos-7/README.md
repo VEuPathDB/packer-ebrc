@@ -9,12 +9,15 @@ Packer generation of virtual machine images for EuPathDB.
 - [jq](https://stedolan.github.io/jq/)
 - sponge (`moreutils` RPM, Homebrew)
 - [librarian-puppet](https://github.com/rodjek/librarian-puppet)
-- [hiera-eyaml](https://github.com/voxpupuli/hiera-eyaml) - if you want to edit encrypted hiera data
-- Public and private eys for hiera-eyaml in the `puppet/keys` directory
-of this project. Copy these from the Notes field of "Packer puppet
-hiera-eyaml keys" in Passpack. The Passpack Notes field does not
-preserve line endings so you'll need to manually fix the line wrapping
-to make valid keys (i.e. replace spaces with newlines).
+- [hiera-eyaml](https://github.com/voxpupuli/hiera-eyaml) - if you want
+to edit encrypted hiera data.
+- Public and private keys for hiera-eyaml in the `puppet/keys` directory
+of this project. These are required on the Packer host even if you do
+not need to edit encrypted hiera data because they will be uploaded to
+and used by the guest for decryption. Copy these from the Notes field of
+"Packer puppet hiera-eyaml keys" in Passpack. The Passpack Notes field
+does not preserve line endings so you'll need to manually fix the line
+wrapping to make valid keys (i.e. replace spaces with newlines).
 
 **Tips:**
 

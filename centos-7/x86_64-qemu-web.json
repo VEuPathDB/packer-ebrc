@@ -39,11 +39,21 @@
   ],
 
   "provisioners": [
+
     {
+      "type": "file",
+      "source": "puppet/hieradata",
+      "destination": "/tmp"
+    },{
+      "type": "file",
+      "source": "puppet/keys",
+      "destination": "/tmp"
+    },{
       "type": "puppet-masterless",
-      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}} PATH=$PATH:/opt/puppetlabs/bin puppet apply --verbose  --detailed-exitcodes --modulepath='{{.ModulePath}}' {{.ManifestFile}}",
-      "module_paths": ["puppet/modules"],
-      "manifest_file": "puppet/manifests/vmbuilder.pp"
+      "manifest_file": "puppet/manifests/vmbuilder.pp",
+      "puppet_bin_dir": "/opt/puppetlabs/puppet/bin",
+      "hiera_config_path": "puppet/hiera.yaml",
+      "module_paths": ["puppet/modules"]
     },
 
     {

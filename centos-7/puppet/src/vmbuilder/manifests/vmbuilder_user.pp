@@ -1,6 +1,9 @@
 # Create vmbuilder account with sudo permission.
 class vmbuilder::vmbuilder_user {
 
+  include ::profiles::vagrant_cbil_svn_auth
+  User['vagrant'] -> Class['::profiles::vagrant_cbil_svn_auth']
+
   group { 'vmbuilder':
     ensure => present,
     gid    => '60001',

@@ -1,6 +1,6 @@
 ---
 
-profiles::vagrant_cbil_svn_auth::svn_username: >
+svncredentials_username: >
      ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
      DQYJKoZIhvcNAQEBBQAEggEAJgh7Icm84LFUxLE3y0rLXnnpFJ6RJpYvpjqA
      WE57R8qPIJGqoGWxXRcrVLfPBlwa16tJ0jHjwRCk8UuQjXMXTRZTTGDnC7wE
@@ -10,7 +10,7 @@ profiles::vagrant_cbil_svn_auth::svn_username: >
      b8zMLn15x7PVoIgpjn5j1drPbbVpjgLFADvNJ3jS7MsjhJr2Di6+FkcDY8ps
      evQOvDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCjG9Z8/RyEpA8TX3Ik
      utQWgCB+WnxkbhA7I5dXGVVRf6VAUs1tZCeyw1o8CcwG+3PhDA==]
-profiles::vagrant_cbil_svn_auth::svn_password: >
+svncredentials_password: >
     ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
     DQYJKoZIhvcNAQEBBQAEggEAqtAMBPa5QfR2eNGzL4Gw14kPOU6eMkiVN3Ci
     IDdBR0+vPsVVPU81wQlgJE9h+2OBQvLNO455JD3Hnxm6Qq3ZSZ87vao5xiba

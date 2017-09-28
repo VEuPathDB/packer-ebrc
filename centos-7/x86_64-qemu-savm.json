@@ -40,7 +40,8 @@
         [ "-drive", "file={{user `localstore`}}/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.root.img,if=virtio,index=0,media=disk"],
         [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.appdb.img,if=virtio,index=1,media=disk"],
         [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.userdb.img,if=virtio,index=2,media=disk"],
-        [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.data.img,if=virtio,index=3,media=disk"]
+        [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.acctdb.img,if=virtio,index=3,media=disk"],
+        [ "-drive", "file={{user `localstore`}}/staging/{{user `product`}}/{{user `product`}}_{{user `buildnumber`}}.data.img,if=virtio,index=4,media=disk"]
       ]
     }
   ],
@@ -55,13 +56,13 @@
     },
     {
       "type": "shell-local",
-      "command": "ansible-galaxy install -v -r ansible/requirements.yml -p ansible/roles/"
+      "command": "ansible-galaxy install -v --force -r ansible/requirements.yml -p ansible/roles/"
     },
     {
       "type": "ansible",
       "playbook_file": "ansible/installwdksite.yml",
       "extra_arguments": [
-        "--settings_file=installsite.yml"
+        "--extra-vars", "settings_file=installsite.yml"
       ]
     },
     {

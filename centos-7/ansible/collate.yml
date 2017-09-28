@@ -6,6 +6,7 @@
 #     and sized according to site-specific needs.
 #     - appdb.img - for WDK application database data files
 #     - userdb.img - for WDK user database data files
+#     - acctdb.img - for WDK account database data files
 #     - data.img - for auxiliary data files (e.g. download and webservice flat files)
 #
 # This playbook leverages Packer to boot the root image, attach and format the additional images.
@@ -43,5 +44,6 @@
   tasks:
     - include: tasks/create_appdb_image.yml
     - include: tasks/create_userdb_image.yml
+    - include: tasks/create_acctdb_image.yml
     - include: tasks/create_data_image.yml
     - include: tasks/run_savm_packer.yml

@@ -59,4 +59,11 @@ class vagrant::vagrant_user {
     mode   => '0440',
   }
 
+  file { "/etc/profile.d/sqlplus.sh":
+    source => "puppet:///modules/profiles/profile.d/sqlplus.sh",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0440',
+  }
+
 }

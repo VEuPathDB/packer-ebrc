@@ -2,12 +2,19 @@
 
 set -e
 
-# PROVIDER - virtualbox, vmware
-# BOX_NAME - e.g. centos-7-64-webdev.box
-# BOX_JSON - e.g. webdev.json
-# VM_NAME -  e.g. centos-7-64-puppet
+# Required shell variables:
+#
+# PROVIDER - virtualbox or vmware
+# BOX_NAME - e.g. centos-7-webdev.box or centos-7-64-virtualbox-puppet.box
+#            This is the name of the file on the BOX_SERVER, it will be used 
+#            as part of the 'url:' in the $BOX_JSON file.
+# BOX_JSON - e.g. webdev.json or centos-7-64-puppet.json
+#            A Vagrantfile will reference this in its `config.vm.box_url` setting.
+# VM_NAME -  e.g. centos-7-webdev or centos-7-64-puppet
 # SHORT_VM_NAME - optional, e.g. webdev. VM_NAME is used if short name is not defined
-# LOCAL_BOX - e.g. 'builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box'
+#            This will be used to determine the subdirectory name on the BOX_SERVER.
+#             /var/www/software.apidb.org/vagrant/webdev
+# LOCAL_BOX - e.g. 'builds/vagrant/virtualbox/centos-7-virtualbox-web.box' or 'builds/vagrant/virtualbox/centos-7-64-virtualbox-puppet.box'
 
 BOX_POSTPROCESSOR_DRYRUN=${BOX_POSTPROCESSOR_DRYRUN:-0}
 CHANGELOG="${CHANGELOG:-routine update}"
@@ -30,9 +37,8 @@ done
 echo "EBRC: getting ${BOX_URL}/${SHORT_VM_NAME}.json"
 curl --fail -Ss "${BOX_URL}/${BOX_JSON}" -o "$LOCAL_BOX_JSON"
 
-
 echo "EBRC: checking ${SHORT_VM_NAME}.json is valid"
-[ "$(jq '.versions' builds/vagrant/centos-7-64-puppet.json)" != "null" ] || {
+[ "$(jq '.versions' "$LOCAL_BOX_JSON")" != "null" ] || {
   echoerr "EBRC: FAIL: no 'versions' section found in ${LOCAL_BOX_JSON}"
   exit 1
 }

@@ -41,7 +41,7 @@ Each build step depends on the artifacts from the previous step.
 #### x86_64-virtualbox-base.json
 
 Generate a VirtualBox OVF with minimal CentOS 7. Creates
-`builds/centos-7-64-virtualbox/centos-7-64-virtualbox.ovf`
+`builds/virtualbox/centos-7-64-base/centos-7-64-base.ovf`
 Password for `root` account is `ebrc`.
 
 ```bash
@@ -55,9 +55,9 @@ kernels and zero the disks.
 
 #### x86_64-virtualbox-puppet.json
 
-Adds Puppet to the `x86_64-virtualbox-base` OVF from the previous step.
+Adds Puppet to the OVF from `x86_64-virtualbox-base.json` of the previous step.
 Creates
-`builds/centos-7-64-puppet-virtualbox/centos-7-64-puppet-virtualbox.ovf`.
+`builds/virtualbox/centos-7-64-puppet/centos-7-64-puppet.ovf`.
 Password for `root` account is `ebrc`.
 
 ```bash
@@ -70,11 +70,11 @@ _This build is optional, it is not needed by
 `x86_64-virtualbox-webdev.json`. Only build this when you want to place an
 updated CentOS box in our box repo._
 
-Converts the `x86_64-puppet-virtualbox` OVF from the previous step to a
+Converts the OVF from `x86_64-virtualbox-puppet.json` of the previous step to a
 Vagrant-compatible box and publishes the box as
 `ebrc/centos-7-64-puppet` in our repo with the box version derived from
 the build timestamp, `%Y%m%d`. Creates
-`builds/vagrant/virtualbox/centos-7-64-puppet.box` on the Packer host. A
+`builds/virtualbox/vagrant/centos-7-64-puppet/centos-7-64-puppet.box` on the Packer host. A
 post-processor runs `bin/vagrant_box_postprocessor.sh` to upload to our
 box repository and update the metadata json file.
 
@@ -89,9 +89,9 @@ The password for `root` account on this VM is `vagrant`.
 
 #### x86_64-virtualbox-webdev.json
 
-Converts `x86_64-virtualbox-puppet` OVF to Vagrant box with EBRC
+Converts the OVF from `x86_64-virtualbox-puppet.json` to Vagrant box with EBRC
 WDK-based web development support. Creates
-`builds/vagrant/virtualbox/centos-7-64-virtualbox-web.box`. A
+`builds/virtualbox/vagrant/centos-7-webdev/centos-7-webdev.box`. A
 `post-processor` step uploads the box and updated `webdev.json` to
 EBRC's box server.
 

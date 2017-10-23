@@ -2,27 +2,23 @@
 
   "variables":
     {
-      "template_name": "centos-7-64",
-      "provider": "virtualbox",
-      "vm_name": "centos-7-webdev",
-      "short_vm_name": "webdev",
       "ssh_username": "root",
       "ssh_password": "ebrc",
-      "localstore": "builds",
       "memory_size": "1024",
       "cpu_count": "2",
       "appdb_disk_size": "512000",
       "userdb_disk_size": "51200",
+      "acctdb_disk_size": "51200",
       "data_disk_size": "256000",
       "webdev_postprocessor_dryrun": "0"
     },
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}",
-      "vm_name": "{{user `vm_name`}}",
+      "output_directory": "builds/virtualbox/vagrant/centos-7-webdev/staging",
+      "vm_name": "centos-7-webdev",
       "type": "virtualbox-ovf",
-      "source_path": "{{user `localstore`}}/{{user `template_name`}}-puppet-{{user `provider`}}/{{user `template_name`}}-puppet-{{user `provider`}}.ovf",
+      "source_path": "builds/virtualbox/centos-7-64-puppet/centos-7-64-puppet.ovf",
       "headless": "true",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",
@@ -37,14 +33,17 @@
         [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
         [ "modifyvm", "{{.Name}}", "--ioapic", "on"],
 
-        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/appdb.vmdk", "--variant", "Standard", "--size", "{{user `appdb_disk_size`}}" ],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "1", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/appdb.vmdk" ],
+        [ "createhd", "--format", "VMDK", "--filename", "builds/virtualbox/vagrant/centos-7-webdev/staging/appdb.vmdk", "--variant", "Standard", "--size", "{{user `appdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "1", "--type", "hdd", "--medium", "builds/virtualbox/vagrant/centos-7-webdev/staging/appdb.vmdk" ],
 
-        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/userdb.vmdk", "--variant", "Standard", "--size", "{{user `userdb_disk_size`}}" ],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "2", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/userdb.vmdk" ],
+        [ "createhd", "--format", "VMDK", "--filename", "builds/virtualbox/vagrant/centos-7-webdev/staging/userdb.vmdk", "--variant", "Standard", "--size", "{{user `userdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "2", "--type", "hdd", "--medium", "builds/virtualbox/vagrant/centos-7-webdev/staging/userdb.vmdk" ],
 
-        [ "createhd", "--format", "VMDK", "--filename", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/data.vmdk", "--variant", "Standard", "--size", "{{user `data_disk_size`}}" ],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "3", "--type", "hdd", "--medium", "{{user `localstore`}}/{{user `vm_name`}}-{{user `provider`}}/data.vmdk" ]
+        [ "createhd", "--format", "VMDK", "--filename", "builds/virtualbox/vagrant/centos-7-webdev/staging/acctdb.vmdk", "--variant", "Standard", "--size", "{{user `acctdb_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "3", "--type", "hdd", "--medium", "builds/virtualbox/vagrant/centos-7-webdev/staging/acctdb.vmdk" ],
+
+        [ "createhd", "--format", "VMDK", "--filename", "builds/virtualbox/vagrant/centos-7-webdev/staging/data.vmdk", "--variant", "Standard", "--size", "{{user `data_disk_size`}}" ],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "4", "--type", "hdd", "--medium", "builds/virtualbox/vagrant/centos-7-webdev/staging/data.vmdk" ]
       ]
     }
   ],
@@ -114,7 +113,7 @@
      {
       "type": "file",
       "source": "/root/packer_build_state",
-      "destination": "builds/build_state",
+      "destination": "builds/virtualbox/vagrant/centos-7-webdev/build_state",
       "direction": "download"
     }
 
@@ -124,22 +123,22 @@
     [
       {
         "type": "vagrant",
-        "output": "builds/vagrant/{{user `provider`}}/{{user `vm_name`}}.box",
+        "output": "builds/virtualbox/vagrant/centos-7-webdev/centos-7-webdev.box",
         "keep_input_artifact": false,
         "include": [
-          "builds/build_state"
+          "builds/virtualbox/vagrant/centos-7-webdev/build_state"
         ]
       },
       {
         "type": "shell-local",
         "environment_vars": [
           "BOX_POSTPROCESSOR_DRYRUN={{user `box_postprocessor_dryrun`}}",
-          "PROVIDER={{user `provider`}}",
-          "VM_NAME={{user `vm_name`}}",
-          "SHORT_VM_NAME={{user `short_vm_name`}}",
-          "BOX_NAME={{user `vm_name`}}.box",
+          "PROVIDER=virtualbox",
+          "VM_NAME=centos-7-webdev",
+          "SHORT_VM_NAME=webdev",
+          "BOX_NAME=centos-7-webdev.box",
           "BOX_JSON=webdev.json",
-          "LOCAL_BOX=builds/vagrant/{{user `provider`}}/{{user `vm_name`}}.box"
+          "LOCAL_BOX=builds/virtualbox/vagrant/centos-7-webdev/centos-7-webdev.box"
         ],
         "script": "bin/vagrant_box_postprocessor.sh"
       }

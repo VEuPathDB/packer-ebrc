@@ -1,9 +1,6 @@
 {
   "variables":
     {
-      "template_name": "centos-7-64",
-      "template_os": "RedHat_64",
-
       "ssh_username": "root",
       "ssh_password": "ebrc",
 
@@ -12,10 +9,7 @@
       "iso_checksum_type": "sha256",
 
       "memory_size": "512",
-      "cpu_count": "1",
-
-      "localstore": "builds",
-      "provisioner": "virtualbox"
+      "cpu_count": "1"
     },
 
   "provisioners": [
@@ -35,15 +29,15 @@
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}",
+      "output_directory": "builds/virtualbox/centos-7-64-base",
+      "vm_name": "centos-7-64-base",
       "type": "virtualbox-iso",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
       ],
       "boot_wait": "10s",
       "disk_size": 40520,
-      "guest_os_type": "{{user `template_os`}}",
+      "guest_os_type": "RedHat_64",
       "http_directory": "http",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",

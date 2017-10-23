@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+this=`basename $0`
 
 # Required shell variables:
 #
@@ -19,7 +20,7 @@ set -e
 BOX_POSTPROCESSOR_DRYRUN=${BOX_POSTPROCESSOR_DRYRUN:-0}
 CHANGELOG="${CHANGELOG:-routine update}"
 SHORT_VM_NAME=${SHORT_VM_NAME:-$VM_NAME}
-LOCAL_BOX_JSON="builds/vagrant/${BOX_JSON}"
+LOCAL_BOX_JSON="builds/${PROVIDER}/vagrant/${VM_NAME}/${BOX_JSON}"
 VERSION="$(date +'%Y%m%d')"
 BOX_URL='https://software.apidb.org/vagrant'
 BOX_SERVER=${BOX_SERVER:-software.apidb.org}
@@ -35,6 +36,7 @@ for c in sponge jq curl; do
 done
 
 echo "EBRC: getting ${BOX_URL}/${SHORT_VM_NAME}.json"
+set -x
 curl --fail -Ss "${BOX_URL}/${BOX_JSON}" -o "$LOCAL_BOX_JSON"
 
 echo "EBRC: checking ${SHORT_VM_NAME}.json is valid"
@@ -107,9 +109,9 @@ if [[ "$BOX_POSTPROCESSOR_DRYRUN" -eq 0 ]]; then
   echo 'EBRC: Create a directory on our vagrant box server'
   ssh "${BOX_SERVER}" "mkdir -p ${BOX_SERVER_PATH}/${SHORT_VM_NAME}/${PROVIDER}/${VERSION}"
   echo 'EBRC: Upload the box to versioned directory, and json file to web root directory.'
+  rsync -qaPv "$LOCAL_BOX_JSON" "${BOX_SERVER}:${BOX_SERVER_PATH}/"
   rsync -qaPv "${LOCAL_BOX}" \
     "${BOX_SERVER}:${BOX_SERVER_PATH}/${SHORT_VM_NAME}/${PROVIDER}/${VERSION}"
-  rsync -qaPv "$LOCAL_BOX_JSON" "${BOX_SERVER}:${BOX_SERVER_PATH}/"
 else
   echo 'EBRC: (DRY-RUN:) Create a directory on our vagrant box server'
   echo "(DRY-RUN:) ssh ${BOX_SERVER}" "mkdir -p ${BOX_SERVER_PATH}/${SHORT_VM_NAME}/${PROVIDER}/${VERSION}"
@@ -118,3 +120,5 @@ else
     ${BOX_SERVER}:${BOX_SERVER_PATH}/${SHORT_VM_NAME}/${PROVIDER}/${VERSION}"
   echo "(DRY-RUN:) rsync -qaPv $LOCAL_BOX_JSON" "${BOX_SERVER}:${BOX_SERVER_PATH}/"
 fi
+
+echo "${this} done"

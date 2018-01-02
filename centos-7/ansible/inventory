@@ -1,7 +1,7 @@
 [all:vars]
 packer_dir="{{ playbook_dir | dirname }}"
-build_dir="{{ packer_dir }}/builds"
-staging_dir="{{ build_dir }}/staging"
+packer_build_dir="{{ packer_dir }}/builds"
+packer_staging_dir="{{ packer_build_dir }}/staging"
 
 [source_webserver]
 #w1.foo.org           ansible_user=mheiges

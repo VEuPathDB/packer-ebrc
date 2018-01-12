@@ -22,7 +22,7 @@ echo "${GIT_REPO} - ${LAST_COMMIT}" > "${PUPPET_DIR}/PUPPET_REPO_VERSION"
 git ls-remote "$GIT_REPO" master
 
 # split tar streams to exclude all puppet environments, then only
-# selected $PUPPET_ENV (current tar doesn't --include)
+# selected $PUPPET_ENV (tar on EL7 doesn't do --include).
 git archive --remote "$GIT_REPO" master \
   | tee \
   >(tar -x -C "$PUPPET_DIR" --exclude=code/environments/*) \

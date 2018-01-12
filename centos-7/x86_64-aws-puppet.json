@@ -1,0 +1,80 @@
+{
+  "variables": {
+    "ami_marketplace_product_code": "aw0evgkw8e5c1q413zgy5pjce",
+    "ami_owner_id": "090541294990",
+    "aws_access_key": "",
+    "aws_region": "",
+    "aws_secret_key": "",
+    "aws_subnet_id": "",
+    "dest_ami_name": "centos-7-64-puppet"
+  },
+
+  "builders": [{
+      "type": "amazon-ebs",
+      "force_deregister": true,
+      "force_delete_snapshot": true,
+      "access_key": "{{ user `aws_access_key` }}",
+      "secret_key": "{{ user `aws_secret_key` }}",
+      "subnet_id": "{{ user `aws_subnet_id` }}",
+      "region": "{{ user `aws_region` }}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "centos-7-64-base",
+          "virtualization-type": "hvm"
+        },
+        "owners": ["{{ user `ami_owner_id` }}"],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "encrypt_boot": true,
+      "ami_block_device_mappings": [
+        {
+          "device_name": "/dev/sda1",
+          "encrypted": true,
+          "volume_type": "gp2",
+          "delete_on_termination": true
+        }
+      ],
+      "ssh_username": "centos",
+      "ssh_pty": true,
+      "ami_name": "{{ user `dest_ami_name` }}",
+      "tags": {
+        "Name": "{{ user `dest_ami_name` }}",
+        "Release": "{{ isotime \"200601020304\" }}"
+      },
+      "run_tags": {
+        "Name": "{{ user `dest_ami_name` }}",
+        "Release": "{{ isotime \"200601020304\" }}"
+      },
+      "run_volume_tags": {
+        "Name": "{{ user `dest_ami_name` }}",
+        "Release": "{{ isotime \"200601020304\" }}"
+      },
+      "snapshot_tags": {
+        "Name": "{{ user `dest_ami_name` }}",
+        "Release": "{{ isotime \"200601020304\" }}"
+      },
+      "ami_description": "CentOS 7 HVM with Puppet"
+    }],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum clean all",
+        "sudo yum update -y",
+        "sudo yum clean all"
+      ]
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sudo -E '{{ .Path }}'",
+      "scripts": [
+        "scripts/bootstrap-puppet.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ]
+}

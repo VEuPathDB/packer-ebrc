@@ -25,6 +25,8 @@
         "most_recent": true
       },
       "instance_type": "t2.micro",
+      "spot_price": "auto",
+      "spot_price_auto_product": "Linux/UNIX (Amazon VPC)",
       "encrypt_boot": true,
       "ami_block_device_mappings": [
         {

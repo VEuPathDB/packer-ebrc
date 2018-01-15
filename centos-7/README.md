@@ -145,11 +145,15 @@ $ packer build -var 'box_postprocessor_dryrun=1' x86_64-virtualbox-webdev.json
 
 ### Requirements
 
+You will need a personal AWS account. There is no EBRC organization
+account at this time.
+
 You need a Virtual Private Cloud (VPC) configured for your region. AWS
 typically creates one as a default but if you don't have one (your
 account predates VPCs or you deleted it) then you will need to create a
 VPC. These Packer templates require a subnet_id value so Packer can then
-lookup which VPC to use.
+lookup which VPC to use - that is, it assumes you are using a
+non-default VPC.
 
 You need the subnet-id from your desired VPC to pass to Packer via the
 `aws_subnet_id` variable.

@@ -123,6 +123,12 @@ manifests as a git archive into the `scratch` directory. (Git archives
 can not be commited to). Production hiera data is excluded from the
 export by this script.
 
+The `scripts/declare_network_is_private.sh` provisioning script will set
+flags on the VM to indicate that some security may be lowered. For
+example, the `IS_PRIVATE_NETWORK` environment variable is set in
+/etc/sysconfig/httpd to allow access to /dashboard without basic
+authentication.
+
 If this build has significant changes set some notes in the `CHANGELOG`
 shell environment variable (defaults to `routine update` if not set),
 then build.

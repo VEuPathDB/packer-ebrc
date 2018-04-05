@@ -104,6 +104,7 @@
         "scripts/remove_puppet.sh",
         "scripts/cleanup-oracle.sh",
         "scripts/install_sshuttle.sh",
+        "scripts/declare_network_is_private.sh",
         "scripts/cleanup.sh",
         "scripts/write_packer_build_state",
         "scripts/zerodisk.sh"

@@ -2,29 +2,44 @@
 # Format and mount external disks for web development VMs
 
 ######################################################################
+# determine device name prefix for items in /dev/ 
+
+CONTROLLER=$1
+CONTROLLER=${CONTROLLER:-virtio}
+
+if [[ "$CONTROLLER" == "sata" ]]; then
+  DEVPREFX=s
+elif [[ "$CONTROLLER" == "virtio" ]]; then
+  DEVPREFX=v
+else
+  echo "FATAL: I do not understand controller type $CONTROLLER. Quitting."
+  exit 1
+fi
+
+######################################################################
 # Device naming depends on qemu interface used. /dev/sd* for sata
 # /dev/vd* for virtio. sata has a limit of 4 disks so we typical have 
 # to use virtio.
 
 # CONFIGURE
 APPDB_DIR=/u02/oradata/appdb
-APPDB_DEV=/dev/vdb
+APPDB_DEV=/dev/${DEVPREFX}db
 APPDB_LABEL=appdb
 
 USERDB_DIR=/u02/oradata/userdb
-USERDB_DEV=/dev/vdc
+USERDB_DEV=/dev/${DEVPREFX}dc
 USERDB_LABEL=userdb
 
 ACCTDB_DIR=/u02/oradata/acctdb
-ACCTDB_DEV=/dev/vdd
+ACCTDB_DEV=/dev/${DEVPREFX}dd
 ACCTDB_LABEL=acctdb
 
 DATA_DIR=/var/www/Common/apiSiteFilesMirror
-DATA_DEV=/dev/vde
+DATA_DEV=/dev/${DEVPREFX}de
 DATA_LABEL=data
 
 BUILDER_DIR=/home/vmbuilder
-BUILDER_DEV=/dev/vdf
+BUILDER_DEV=/dev/${DEVPREFX}df
 BUILDER_LABEL=vmbuilder
 
 

@@ -59,8 +59,12 @@ elif [ $jq_ret -eq 0 ]; then
   echoerr "${BOX_URL}/${SHORT_VM_NAME}.json and"
   echoerr 'run `packer build` again, or run this'
   echoerr "script ($0) again."
-  echoerr 'Quitting...'
-  exit 1
+  if [[ "$BOX_POSTPROCESSOR_DRYRUN" -eq 0 ]]; then
+    echoerr 'Quitting...'
+    exit 1
+  else
+    echoerr 'Not quitting because this is a dry run'
+  fi
 else
   echoerr "EBRC: FAIL: jq exited with $?"
   exit 1

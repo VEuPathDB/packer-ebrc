@@ -1,0 +1,13 @@
+- set_fact: buildnumber="{{ ebrc.wdk.buildnumber }}"
+- set_fact: product="{{ ebrc.wdk.modelname }}"
+
+- set_fact: vmbuilderImageSizeGB=10G
+- set_fact: vmbuilder_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.vmbuilder.img"
+
+- file: path="{{ vmbuilder_img }}" state=absent
+  when: do_full_rebuild|bool == True
+- name: "qemu-img create {{ vmbuilderImageSizeGB }} vmbuilder image"
+  command: "qemu-img create -f qcow2 {{ vmbuilder_img }} {{ vmbuilderImageSizeGB }}"
+  args:
+    creates: "{{ vmbuilder_img
+ }}"

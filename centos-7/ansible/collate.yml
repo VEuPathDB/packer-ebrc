@@ -42,6 +42,7 @@
     variables.yml
   ]
   tasks:
+    - include: tasks/create_builder_image.yml
     - include: tasks/create_appdb_image.yml
     - include: tasks/create_userdb_image.yml
     - include: tasks/create_acctdb_image.yml

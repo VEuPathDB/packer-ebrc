@@ -2,5 +2,7 @@
 **/builds/**
 **/scratch/**
 **/packer_cache/**
-playbook.retry
+*.retry
+*_dashboard.json
+installsite.yml
 **/*.pem

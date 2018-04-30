@@ -1,6 +1,6 @@
 .DS_Store
 scratch
 RPMLIST
+*.pyc
 puppet/.tmp
 **/*.pem
-

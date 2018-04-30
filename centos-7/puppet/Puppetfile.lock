@@ -1,0 +1,37 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    puppetlabs-stdlib (4.19.0)
+
+GIT
+  remote: https://github.com/EuPathDB/puppet-svncredentials.git
+  ref: master
+  sha: 8261541cc9f07413257b57876bfd5009dcf47bcd
+  specs:
+    ebrc-svncredentials (0.1.0)
+      puppetlabs-stdlib (>= 1.0.0)
+
+PATH
+  remote: ./src/profiles
+  specs:
+    local-profiles (0.0.0)
+      ebrc-svncredentials (>= 0)
+
+PATH
+  remote: ./src/vagrant
+  specs:
+    local-vagrant (0.0.0)
+      ebrc-svncredentials (>= 0)
+
+PATH
+  remote: ./src/vmbuilder
+  specs:
+    local-vmbuilder (0.0.0)
+      ebrc-svncredentials (>= 0)
+
+DEPENDENCIES
+  ebrc-svncredentials (>= 0)
+  local-profiles (>= 0)
+  local-vagrant (>= 0)
+  local-vmbuilder (>= 0)
+

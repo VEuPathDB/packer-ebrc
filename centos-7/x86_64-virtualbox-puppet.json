@@ -2,19 +2,16 @@
 
   "variables":
     {
-      "template_name": "centos-7-64",
-      "provisioner": "virtualbox",
       "ssh_username": "root",
-      "ssh_password": "ebrc",
-      "localstore": "builds"
+      "ssh_password": "ebrc"
     },
 
   "builders": [
     {
-      "output_directory": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}-puppet",
-      "vm_name": "{{user `template_name`}}-{{user `provisioner`}}-puppet",
+      "output_directory": "builds/virtualbox/centos-7-64-puppet",
+      "vm_name": "centos-7-64-puppet",
       "type": "virtualbox-ovf",
-      "source_path": "{{user `localstore`}}/{{user `template_name`}}-{{user `provisioner`}}/{{user `template_name`}}-{{user `provisioner`}}.ovf",
+      "source_path": "builds/virtualbox/centos-7-64-base/centos-7-64-base.ovf",
       "headless": "true",
       "ssh_pty" : "true",
       "ssh_username": "{{user `ssh_username`}}",

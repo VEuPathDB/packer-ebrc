@@ -5,3 +5,4 @@
 *.retry
 *_dashboard.json
 installsite.yml
+**/*.pem

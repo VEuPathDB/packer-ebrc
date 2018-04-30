@@ -6,6 +6,7 @@
 # to the guest (and hopefully removed in cleanup).
 
 GIT_REPO='git@git.apidb.org:puppet4.git'
+PUPPET_ENV="savm"
 
 LAST_COMMIT="$(git ls-remote --heads $GIT_REPO master | awk '{print $1}')"
 
@@ -20,7 +21,10 @@ echo "${GIT_REPO} - ${LAST_COMMIT}" > "${PUPPET_DIR}/PUPPET_REPO_VERSION"
 
 git ls-remote "$GIT_REPO" master
 
-git archive --remote "$GIT_REPO" "$LAST_COMMIT" \
-  | tar -x -C "$PUPPET_DIR" \
-    --exclude=code/environments/hashicorp\
-    --exclude=code/environments/production 
+# split tar streams to exclude all puppet environments, then only
+# selected $PUPPET_ENV (tar on EL7 doesn't do --include).
+git archive --remote "$GIT_REPO" master \
+  | tee \
+  >(tar -x -C "$PUPPET_DIR" --exclude=code/environments/*) \
+  >(tar -x -C "$PUPPET_DIR" code/environments/${PUPPET_ENV}) \
+  >/dev/null

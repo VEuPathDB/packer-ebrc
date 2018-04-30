@@ -1,0 +1,13 @@
+forge 'https://forgeapi.puppetlabs.com'
+
+mod 'ebrc/svncredentials',
+  :git => 'https://github.com/EuPathDB/puppet-svncredentials.git'
+
+mod 'local/vagrant',
+  :path => './src/vagrant'
+
+mod 'local/vmbuilder',
+  :path => './src/vmbuilder'
+
+mod 'local/profiles',
+  :path => './src/profiles'

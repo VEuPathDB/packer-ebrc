@@ -4,3 +4,4 @@ RPMLIST
 *.pyc
 puppet/.tmp
 **/*.pem
+*.log

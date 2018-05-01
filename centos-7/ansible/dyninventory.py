@@ -17,11 +17,11 @@ Final website variables are under the 'ebrc' namespace.
         "vars": {
           "ebrc": {
             "httpd": {
-              "basic_auth_required": false, 
+              "basic_auth_required": false,
               "vhost": "sa.vm.trichdb.org"
-            }, 
+            },
             "wdk": {
-              "buildnumber": "31", 
+              "buildnumber": "31",
         ...
 
 '''
@@ -30,10 +30,14 @@ import yaml
 import json
 import urllib2
 from ansible.utils.vars import merge_hash
+from ansible.utils.display import Display
+
+display = Display()
 
 usersettings_file = 'installsite.yml'
 
 def main():
+  #display.error("")
   usersettings = load_settings_file(usersettings_file)
   dashboardsettings_file = fetch_dashboard_json_to_file(usersettings['dashboard'])
   dashboardsettings = load_settings_file(dashboardsettings_file)
@@ -41,7 +45,7 @@ def main():
   print(json.dumps(inventory(settings), sort_keys=True, indent=2))
 
 def inventory(settings):
-  return {
+  inv_data = {
     'all': {
       'vars': {
         'ebrc': settings,
@@ -63,13 +67,25 @@ def inventory(settings):
       }
     }
   }
+  inv_fh = open("inventory.log", 'w')
+  inv_fh.write(json.dumps(inv_data, indent=2))
+  return inv_data
 
 def fetch_dashboard_json_to_file(dash_data):
   dash_host = dash_data['hostname']
-  dash_uri = 'http://' + dash_host + '/dashboard/json'
+
+  if 'token' in dash_data:
+    dash_token = dash_data['token']
+  else:
+    dash_token = None
+
+  dash_uri = "https://{}/dashboard/json".format(dash_host)
 
   try:
-    response = urllib2.urlopen(dash_uri)
+    request = urllib2.Request(dash_uri)
+    if dash_token is not None:
+      request.add_header("x-dashboard-security-token", dash_token)
+    response = urllib2.urlopen(request)
     content = response.read()
   except urllib2.HTTPError, e:
     print "HTTPError with %s: %s" % (dash_uri, e)

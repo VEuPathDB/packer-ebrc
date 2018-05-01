@@ -38,8 +38,6 @@ class ActionModule(ActionBase):
     if task_vars is None:
       task_vars = dict()
     result = super(ActionModule, self).run(tmp, task_vars)
-    #value = 'foo'
-    #print "FOOOO {}".format(self.settings_file)
     usersettings = self.load_settings_file(self.settings_file)
     dashboardsettings_file = self.fetch_dashboard_json_to_file(usersettings['dashboard'])
     dashboardsettings = self.load_settings_file(dashboardsettings_file)

@@ -12,7 +12,8 @@
     dest: "{{ install_prop_file }}"
   vars:
     vhost: "{{ ebrc.httpd.vhost }}"
-    product: "{{ ebrc.wdk.modelname  }}"
+    product: "{{ ebrc.wdk.product  }}"
+    project: "{{ ebrc.wdk.modelname }}"
     basic_auth_required: "{{ ebrc.httpd.basic_auth_required | lower }}"
     owner: "{{ ebrc.website.owner }}"
     webapp_ctx: "{{ ebrc.tomcat.webapp }}"
@@ -34,8 +35,8 @@
   become: True
   when: tomcat_status.rc != 0
 
-- name: Check for existing /var/www/{{ ebrc.wdk.modelname }}/{{ ebrc.tomcat.webapp }}
-  stat: path="/var/www/{{ ebrc.wdk.modelname }}/{{ ebrc.tomcat.webapp }}"
+- name: Check for existing /var/www/{{ ebrc.wdk.product }}/{{ ebrc.tomcat.webapp }}
+  stat: path="/var/www/{{ ebrc.wdk.product }}/{{ ebrc.tomcat.webapp }}"
   register: site_dir
 
 - name: run installWdkSite

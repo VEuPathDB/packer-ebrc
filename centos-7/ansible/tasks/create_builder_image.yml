@@ -1,5 +1,5 @@
 - set_fact: buildnumber="{{ ebrc.wdk.buildnumber }}"
-- set_fact: product="{{ ebrc.wdk.modelname }}"
+- set_fact: product="{{ ebrc.wdk.product }}"
 
 - set_fact: vmbuilderImageSizeGB=10G
 - set_fact: vmbuilder_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.vmbuilder.img"

@@ -1,5 +1,5 @@
 - set_fact: buildnumber="{{ ebrc.wdk.buildnumber }}"
-- set_fact: product="{{ ebrc.wdk.modelname }}"
+- set_fact: product="{{ ebrc.wdk.product }}"
 
   # REFACTOR: {{ packer_build_dir }}/{{ product }} VARIABLE MUST MATCH PACKER TEMPLATE
 - name: remove any existing {{ packer_build_dir }}/{{ product }}

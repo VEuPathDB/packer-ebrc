@@ -1,5 +1,5 @@
 - include_vars: variables.yml
 
 - name: make apiSiteFilesMirror staging directory
-  file: path="{{ packer_staging_dir }}/{{ ebrc.wdk.modelname }}/apiSiteFilesMirror"
+  file: path="{{ packer_staging_dir }}/{{ ebrc.wdk.product }}/apiSiteFilesMirror"
         state=directory

@@ -1,5 +1,5 @@
 - set_fact: buildnumber="{{ ebrc.wdk.buildnumber }}"
-- set_fact: product="{{ ebrc.wdk.modelname }}"
+- set_fact: product="{{ ebrc.wdk.product }}"
 
 - name: calculate size of cached apiSiteFilesMirror
   shell: "du -s -b --apparent-size {{ packer_staging_dir }}/{{ product }}/apiSiteFilesMirror/{{ product }}  | cut -f -1"

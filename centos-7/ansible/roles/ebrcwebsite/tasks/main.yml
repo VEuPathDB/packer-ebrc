@@ -1,5 +1,5 @@
 ---
-- name: load setting for ebrcsite
+- name: load setting for ebrcsite from '{{ settings_file }}'
   load_ebrcsite_vars: settings_file={{ settings_file }}
 
 - include: confirmvars.yml

@@ -6,7 +6,7 @@
   register: asfDiskUsageBytes
 
 - set_fact: dataImageSizeGB="{{ (( (asfDiskUsageBytes.stdout|int * 1.10) / 1024**3 ) +5) | round(1, 'ceil') }}G"
-- set_fact: data_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.data.img"
+- set_fact: data_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.data.img"
 - file: path="{{ data_img }}" state=absent
   when: do_full_rebuild|bool == True
 - name: "qemu-img create {{ dataImageSizeGB }} data image"

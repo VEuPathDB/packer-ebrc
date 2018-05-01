@@ -19,8 +19,8 @@
   args:
     chdir: "{{ packer_dir }}"
     creates:
-      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.root.img"
-      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.appdb.img"
-      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.userdb.img"
-      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.acctdb.img"
-      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.data.img"
+      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.root.img"
+      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.appdb.img"
+      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.userdb.img"
+      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.acctdb.img"
+      - "{{ packer_build_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.data.img"

@@ -2,7 +2,7 @@
 - set_fact: product="{{ ebrc.wdk.product }}"
 
 - set_fact: appdbImageSizeGB="{{ ((ebrc.wdk.databases.appdb.sizeondisk|int * 1.10 ) +5) | round(1, 'ceil') }}G"
-- set_fact: appdb_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.appdb.img"
+- set_fact: appdb_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.appdb.img"
 
 - file: path="{{ appdb_img }}" state=absent
   when: do_full_rebuild|bool == True

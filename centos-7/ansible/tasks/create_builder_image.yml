@@ -2,7 +2,7 @@
 - set_fact: product="{{ ebrc.wdk.product }}"
 
 - set_fact: vmbuilderImageSizeGB=10G
-- set_fact: vmbuilder_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_{{ buildnumber }}.vmbuilder.img"
+- set_fact: vmbuilder_img="{{ packer_staging_dir }}/{{ product }}/{{ product }}_b{{ buildnumber }}.vmbuilder.img"
 
 - file: path="{{ vmbuilder_img }}" state=absent
   when: do_full_rebuild|bool == True

@@ -80,7 +80,14 @@
 
     {
       "type": "shell",
-      "inline": ["PATH=$PATH:/opt/puppetlabs/bin puppet apply --environment=savm --codedir=/tmp/puppet/code /tmp/puppet/code/environments/savm/manifests"]
+      "environment_vars": [
+        "puppet_environment=savm",
+        "puppet_code_dir=/media/sf_scratch/puppet/code"
+      ],
+      "execute_command": "{{.Vars}} sh '{{.Path}}'",
+      "scripts": [
+        "scripts/puppet-apply.sh"
+      ]
     },
 
     {

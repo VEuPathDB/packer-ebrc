@@ -75,7 +75,7 @@
       "type": "shell",
       "environment_vars": [
         "puppet_environment=savm",
-        "puppet_code_dir=/media/sf_scratch/puppet/code"
+        "puppet_code_dir=/tmp/puppet/code"
       ],
       "execute_command": "{{.Vars}} sh '{{.Path}}'",
       "scripts": [

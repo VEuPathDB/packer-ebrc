@@ -23,6 +23,7 @@ PATH=$PATH:/opt/puppetlabs/bin
 puppet_environment=${puppet_environment:-savm} 
 puppet_code_dir=${puppet_code_dir:-/media/sf_scratch/puppet/code}
 
+echo -n "Puppet version: "
 puppet --version
 
 set -x
@@ -30,7 +31,7 @@ puppet apply \
   --detailed-exitcodes \
   --test \
   --environment="${puppet_environment}" \
-  --codedir=/media/sf_scratch/puppet/code \
+  --codedir="${puppet_code_dir}" \
   "${puppet_code_dir}/environments/${puppet_environment}/manifests"
 puppet_exit_code=$?
 set +x

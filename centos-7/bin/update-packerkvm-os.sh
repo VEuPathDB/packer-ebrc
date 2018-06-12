@@ -33,11 +33,7 @@ else
   rm -f "/tmp/Oracle_VM_VirtualBox_Extension_Pack-${VBOXVERSION}.vbox-extpack"
 fi
 
-needs-restarting -r
-RESTART=$?
-echo RESTART $RESTART
-
-if [[ $RESTART -ne 0 ]]; then
+if ! needs-restarting -r; then
   echo "Rebooting in 1 minute"
   sudo /sbin/shutdown -r +1
 fi

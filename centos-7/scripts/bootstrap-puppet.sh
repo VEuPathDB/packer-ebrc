@@ -31,6 +31,6 @@ echo "Puppet installed!"
 echo "Installing Gems for Puppet"
 # must use Puppet's gem so module is installed
 # in Puppet's gempath.
-/opt/puppetlabs/puppet/bin/gem install hiera-eyaml
+/opt/puppetlabs/puppet/bin/gem install hiera-eyaml -v 2.1.0
 
 echo "Gems installed!"

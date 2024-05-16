@@ -10,6 +10,11 @@ variable "disk_size" {
   default = 40960
 }
 
+variable "cpus" {
+  type    = number
+  default = null
+}
+
 variable "memory" {
   default = 2048
 }
@@ -24,6 +29,7 @@ source "qemu" "rocky-8-64-base" {
   output_directory  = "builds/libvirt/rocky-8-64-base"
   shutdown_command  = "/usr/bin/systemctl poweroff"
   disk_interface    = "virtio"
+  cpus              = var.cpus
   disk_size         = var.disk_size
   memory            = var.memory
   headless          = var.headless

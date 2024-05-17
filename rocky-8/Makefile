@@ -4,6 +4,7 @@
 ON_ERROR  ?= cleanup
 HEADLESS  ?= true
 BOXDIR    ?= builds/libvirt/vagrantbox
+VERSION   ?= "$(shell date +%Y%m%d.%H%M)"
 
 # Build command
 PKR_BUILD_CMD = packer build -var 'headless=$(HEADLESS)' -on-error=$(ON_ERROR)
@@ -22,7 +23,7 @@ vagrant:
 package:
 	mkdir -p "$(BOXDIR)"
 	cp -u files/libvirt_metadata.json "$(BOXDIR)/metadata.json"
-	sed -i "s/19700101/$(shell date +%Y%m%d)/g" "$(BOXDIR)/metadata.json"
+	sed -i "s/19700101/$(VERSION)/g" "$(BOXDIR)/metadata.json"
 	cp -u builds/libvirt/rocky-8-64-vagrant/rocky-8-64-vagrant "$(BOXDIR)/box.img"
 	cd "$(BOXDIR)" && \
 	tar cvf rocky-8-64-puppet.box box.img metadata.json > /dev/null 2>&1 && \

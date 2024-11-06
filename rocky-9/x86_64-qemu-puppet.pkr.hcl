@@ -29,6 +29,11 @@ source "qemu" "rocky-9-64-puppet" {
   vm_name           = "rocky-9-64-puppet"
   net_device        = "virtio-net"
   boot_wait         = "5s"
+  qemuargs          = [
+    [
+      "-cpu","host"
+    ]
+  ]
 }
 
 build {

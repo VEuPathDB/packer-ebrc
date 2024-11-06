@@ -43,6 +43,11 @@ source "qemu" "rocky-9-64-base" {
   net_device        = "virtio-net"
   boot_wait         = "5s"
   boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"]
+  qemuargs          = [
+    [
+      "-cpu", "host"
+    ]
+  ]
 }
 
 build {

@@ -2,7 +2,7 @@
 set -eux
 
 # Install Puppetlabs Repo
-REPO_URL="https://yum.puppetlabs.com/puppet7-release-el-8.noarch.rpm"
+REPO_URL="https://yum.puppetlabs.com/puppet8-release-el-9.noarch.rpm"
 REPO_FILE="$(mktemp).rpm"
 curl -s --output "${REPO_FILE}" "${REPO_URL}"
 yum install -y "${REPO_FILE}"

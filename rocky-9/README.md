@@ -2,7 +2,7 @@
 
 This automation helps build virtual machine images in stages and configures a
 Vagrant box for a common development environment. The last stage copies the
-`rocky-8-64-vagrant` image and a `metadata.json` file, then archives them into
+`rocky-9-64-vagrant` image and a `metadata.json` file, then archives them into
 the `.box` format that Vagrant expects.
 
 ## Quick Start
@@ -39,7 +39,7 @@ minutes on a decent connection and machine, there may be an issue.
 To import and test the resulting box:
 
 ```
-vagrant box add test ./builds/libvirt/vagrantbox/rocky-8-64-puppet.box
+vagrant box add test ./builds/libvirt/vagrantbox/rocky-9-64-puppet.box
 vagrant init test
 vagrant up
 ```
@@ -55,11 +55,11 @@ Vagrant box.
 
 ### 1. Base Image
 Command: `make base`\
-This stage is based on the Rocky 8 Boot ISO and runs a basic kickstart to set up the initial system.
+This stage is based on the Rocky 9 Boot ISO and runs a basic kickstart to set up the initial system.
 
 ### 2. Puppet Installation
 Command: `make puppet`\
-Installs Puppet Labs 7 repository, `puppet-agent`, `hiera-eyaml`, and `r10k`.
+Installs Puppet Labs 8 repository, `puppet-agent`, `hiera-eyaml`, and `r10k`.
 
 ### 3. Vagrant Provisioning
 Command: `make vagrant`\

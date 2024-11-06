@@ -23,10 +23,10 @@ variable "headless" {
   default = true
 }
 
-source "qemu" "rocky-8-64-base" {
+source "qemu" "rocky-9-64-base" {
   iso_url           = var.iso_url
   iso_checksum      = "sha256:${var.iso_sha256}"
-  output_directory  = "builds/libvirt/rocky-8-64-base"
+  output_directory  = "builds/libvirt/rocky-9-64-base"
   shutdown_command  = "/usr/bin/systemctl poweroff"
   disk_interface    = "virtio"
   cpus              = var.cpus
@@ -39,7 +39,7 @@ source "qemu" "rocky-8-64-base" {
   ssh_username      = "root"
   ssh_password      = "ebrc"
   ssh_timeout       = "60m"
-  vm_name           = "rocky-8-64-base"
+  vm_name           = "rocky-9-64-base"
   net_device        = "virtio-net"
   boot_wait         = "5s"
   boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"]
@@ -47,7 +47,7 @@ source "qemu" "rocky-8-64-base" {
 
 build {
   name = "ebrc"
-  sources = ["source.qemu.rocky-8-64-base"]
+  sources = ["source.qemu.rocky-9-64-base"]
 
   provisioner "shell" {
     scripts = [

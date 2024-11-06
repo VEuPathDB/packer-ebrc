@@ -24,10 +24,10 @@ package:
 	mkdir -p "$(BOXDIR)"
 	cp -u files/libvirt_metadata.json "$(BOXDIR)/metadata.json"
 	sed -i "s/19700101/$(VERSION)/g" "$(BOXDIR)/metadata.json"
-	cp -u builds/libvirt/rocky-8-64-vagrant/rocky-8-64-vagrant "$(BOXDIR)/box.img"
+	cp -u builds/libvirt/rocky-9-64-vagrant/rocky-9-64-vagrant "$(BOXDIR)/box.img"
 	cd "$(BOXDIR)" && \
-	tar cvf rocky-8-64-puppet.box box.img metadata.json > /dev/null 2>&1 && \
-	echo "Successfully created rocky-8-64-puppet.box!"
+	tar cvf rocky-9-64-puppet.box box.img metadata.json > /dev/null 2>&1 && \
+	echo "Successfully created rocky-9-64-puppet.box!"
 
 clean:
 	rm -rf builds

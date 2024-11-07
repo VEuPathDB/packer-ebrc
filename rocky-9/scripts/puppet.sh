@@ -19,5 +19,8 @@ dnf install -y puppet-agent
 /opt/puppetlabs/puppet/bin/gem install faraday -v 2.8.1
 /opt/puppetlabs/puppet/bin/gem install r10k
 
+# add a symlink for r10k so it's on PATH
+ln -s /opt/puppetlabs/puppet/bin/r10k /opt/puppetlabs/bin/
+
 # git
 dnf install -y git

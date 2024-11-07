@@ -5,5 +5,5 @@
 #
 # Don't update the kernel
 
-yum -q -y clean all
-yum -q -y update
+dnf -q -y clean all
+dnf -q -y update

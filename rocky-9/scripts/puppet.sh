@@ -5,11 +5,11 @@ set -eux
 REPO_URL="https://yum.puppetlabs.com/puppet8-release-el-9.noarch.rpm"
 REPO_FILE="$(mktemp).rpm"
 curl -s --output "${REPO_FILE}" "${REPO_URL}"
-yum install -y "${REPO_FILE}"
+dnf install -y "${REPO_FILE}"
 rm -f "${REPO_FILE}"
 
 # Install Puppet
-yum install -y puppet-agent
+dnf install -y puppet-agent
 
 # Use Puppet's gem so modules are installed in Puppet's gempath
 /opt/puppetlabs/puppet/bin/gem install hiera-eyaml

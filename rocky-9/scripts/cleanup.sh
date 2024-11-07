@@ -17,7 +17,7 @@ rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
 rm -f /root/VBoxGuestAdditions*
 
 # Clean yum cache
-yum -q -y clean all
+dnf -q -y clean all
 
 # Truncate log files to clear their contents
 truncate -s 0 /var/log/audit/audit.log

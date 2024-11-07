@@ -18,3 +18,6 @@ yum install -y puppet-agent
 /opt/puppetlabs/puppet/bin/gem install faraday-net_http -v '3.0.2'
 /opt/puppetlabs/puppet/bin/gem install faraday -v 2.8.1
 /opt/puppetlabs/puppet/bin/gem install r10k
+
+# git
+dnf install -y git

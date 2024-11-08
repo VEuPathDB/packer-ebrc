@@ -27,6 +27,7 @@ package:
 	cp -u builds/libvirt/rocky-9-64-vagrant/rocky-9-64-vagrant "$(BOXDIR)/box.img"
 	cd "$(BOXDIR)" && \
 	tar cvf rocky-9-64-puppet.box box.img metadata.json > /dev/null 2>&1 && \
+	rm box.img metadata.json && \
 	echo "Successfully created rocky-9-64-puppet.box!"
 
 clean:

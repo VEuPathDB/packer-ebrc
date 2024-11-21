@@ -8,6 +8,8 @@ cat <<EOF > /etc/puppetlabs/r10k/r10k.yaml
   :internal:
     remote: '/vagrant/scratch/puppet-control'
     basedir: '/etc/puppetlabs/code/environments'
+git:
+  default_ref: master
 EOF
 chmod 644 /etc/puppetlabs/r10k/r10k.yaml
 

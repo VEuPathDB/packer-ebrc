@@ -1,0 +1,6 @@
+{
+  "provider": "libvirt",
+  "version": "19700101",
+  "format": "qcow2",
+  "virtual_size": 40
+}

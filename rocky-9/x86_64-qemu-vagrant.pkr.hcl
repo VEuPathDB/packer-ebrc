@@ -42,6 +42,7 @@ build {
 
   provisioner "shell" {
     scripts = [
+      "scripts/grub_timeout.sh",
       "scripts/vagrant.sh",
       "scripts/cleanup.sh",
       "scripts/zerodisk.sh"

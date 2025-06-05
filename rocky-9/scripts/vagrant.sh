@@ -6,7 +6,7 @@ mkdir -p /etc/puppetlabs/r10k/
 cat <<EOF > /etc/puppetlabs/r10k/r10k.yaml
 :sources:
   :internal:
-    remote: '/vagrant/scratch/puppet-control'
+    remote: '/scratch/puppet-control'
     basedir: '/etc/puppetlabs/code/environments'
 git:
   default_ref: master

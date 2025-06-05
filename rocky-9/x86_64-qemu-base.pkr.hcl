@@ -1,9 +1,9 @@
 variable "iso_url" {
-  default = "https://dl.rockylinux.org/pub/rocky/9.5/isos/x86_64/Rocky-9.5-x86_64-boot.iso"
+  default = "https://dl.rockylinux.org/pub/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-boot.iso"
 }
 
 variable "iso_sha256" {
-  default = "628c069c9685477360640a6b58dc919692a11c44b49a50a024b5627ce3c27d5f"
+  default = "0fad8d8b19a94a0222ea37152cdf5601229fe0178b651dc476e1cba41d2e6067"
 }
 
 variable "disk_size" {
